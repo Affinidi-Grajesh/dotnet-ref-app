@@ -1,0 +1,50 @@
+﻿@page
+@model Affinidi_Login_Demo_App.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white text-center">
+                    <h3 class="mb-0">Login</h3>
+                </div>
+                <div class="card-body p-5 text-center">
+                    <p class="lead mb-4">Choose your login method.</p>
+
+                    <!-- Affinidi Login Button -->
+                    <div class="d-grid gap-2 mb-4">
+                        <form method="post" asp-page-handler="Login">
+                            <button class="btn btn-primary btn-lg w-100" type="submit">
+                                <img src="https://www.affinidi.com/favicon.ico" alt="Affinidi Logo" style="height: 24px; margin-right: 8px; vertical-align: middle;">
+                                Login with Affinidi
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="text-muted d-flex align-items-center my-4">
+                        <hr class="flex-grow-1">
+                        <span class="px-3">OR</span>
+                        <hr class="flex-grow-1">
+                    </div>
+
+                    <!-- Traditional Login Form -->
+                    <p class="text-muted mb-4">Use traditional email and password.</p>
+                    <div class="form-floating mb-3">
+                        <input type="email" id="typeEmailX" class="form-control" placeholder="Email" />
+                        <label for="typeEmailX">Email</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" id="typePasswordX" class="form-control" placeholder="Password" />
+                        <label for="typePasswordX">Password</label>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-secondary btn-lg" type="submit">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

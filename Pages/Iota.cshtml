@@ -1,0 +1,27 @@
+@page
+@model Affinidi_Login_Demo_App.Pages.IotaModel
+@{
+    ViewData["Title"] = "Affinidi Iota Framework";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white text-center">
+                    <h3 class="mb-0">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body p-5 text-center">
+                    <p class="lead mb-4">Select a sharing type to demonstrate different sharing flows using the Iota Framework.</p>
+
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-primary btn-lg" type="button">Share Public Credential</button>
+                        <button class="btn btn-secondary btn-lg" type="button">Share Private Credential</button>
+                        <button class="btn btn-success btn-lg" type="button">Share with Presentation Definition</button>
+                        <button class="btn btn-info btn-lg text-dark" type="button">Share Multiple Credentials</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
