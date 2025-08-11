@@ -17,13 +17,14 @@ namespace Affinidi_Login_Demo_App.Util
 
         [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
         public ClaimModeEnum claimMode { get; set; }
-        public string? holderDid { get; set; }
+        // public string? holderDid { get; set; }
         public List<CredentialData> data { get; set; } = new List<CredentialData>();
     }
     public class CredentialData
     {
         public string credentialTypeId { get; set; } = string.Empty;
         public object? credentialData { get; set; }
+        public object? metaData { get; set; }
     }
 
     public class StartIssuanceResponse
@@ -68,8 +69,8 @@ namespace Affinidi_Login_Demo_App.Util
             var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
             var token = await _authProvider.FetchProjectScopedTokenAsync();
             var jsonPayload = System.Text.Json.JsonSerializer.Serialize(input);
-
-
+            Console.WriteLine($"Issuance API request: {jsonPayload}");
+            Console.WriteLine($"Authorization token: {token}");
 
             using var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
