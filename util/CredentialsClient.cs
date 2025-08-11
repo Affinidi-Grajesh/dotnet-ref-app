@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Affinidi_Login_Demo_App.Util
 {
@@ -25,6 +26,9 @@ namespace Affinidi_Login_Demo_App.Util
         public string credentialTypeId { get; set; } = string.Empty;
         public object? credentialData { get; set; }
         public object? metaData { get; set; }
+
+        public List<dynamic>? statusListDetails { get; set; } // Added this property
+
     }
 
     public class StartIssuanceResponse
@@ -68,7 +72,16 @@ namespace Affinidi_Login_Demo_App.Util
             var localVarPath = $"cis/v1/{Uri.EscapeDataString(projectId)}/issuance/start";
             var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
             var token = await _authProvider.FetchProjectScopedTokenAsync();
-            var jsonPayload = System.Text.Json.JsonSerializer.Serialize(input);
+
+            // Use System.Text.Json with options to ignore null values
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                WriteIndented = true // Optional: for readability in console logs
+            };
+
+            var jsonPayload = System.Text.Json.JsonSerializer.Serialize(input, options);
+
             Console.WriteLine($"Issuance API request: {jsonPayload}");
             Console.WriteLine($"Authorization token: {token}");
 
