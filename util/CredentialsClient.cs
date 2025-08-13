@@ -49,9 +49,7 @@ namespace Affinidi_Login_Demo_App.Util
     }
 
     public class IssuanceStatusResponse { }
-    public class VerifyPresentationInput { }
 
-    public class VerifyPresentationResponse { }
 
     public class ApiResponse<T> { public T? Data { get; set; } }
 
@@ -130,7 +128,6 @@ namespace Affinidi_Login_Demo_App.Util
     public class CredentialsClient
     {
         private readonly IssuanceApi _issuanceApi;
-        private readonly VerificationApi _verificationApi;
         private readonly AuthProviderParams _authProviderParams;
 
         public CredentialsClient()
@@ -154,8 +151,7 @@ namespace Affinidi_Login_Demo_App.Util
             Console.WriteLine($"Issuance API Base Path: {issuanceConfig.BasePath}");
             _issuanceApi = new IssuanceApi(authProvider, issuanceConfig);
 
-            var verificationConfig = new VerificationConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}/ver" };
-            _verificationApi = new VerificationApi(authProvider, verificationConfig);
+
         }
 
         public async Task<StartIssuanceResponse> IssuanceStart(StartIssuanceInput apiData)
@@ -171,18 +167,9 @@ namespace Affinidi_Login_Demo_App.Util
             return response.Data;
         }
 
-        public async Task<VerifyPresentationResponse> VerifyPresentation(VerifyPresentationInput apiData)
-        {
-            var response = await _verificationApi.VerifyPresentationAsync(apiData);
-            Console.WriteLine($"verifyPresentation response: {response.Data}");
-            return response.Data;
-        }
+
     }
-    public class VerificationApi
-    {
-        public VerificationApi(AuthProvider authProvider, object config) { /* SDK Implementation */ }
-        public virtual Task<ApiResponse<VerifyPresentationResponse>> VerifyPresentationAsync(VerifyPresentationInput input) { throw new NotImplementedException(); }
-    }
+
 
 
 }
