@@ -31,10 +31,161 @@ When integrating with the Affinidi Iota Framework, developers must create a Conf
 5. After creating the configuration, define the Presentation Definitions to query specific data from the Affinidi Vault. We will use Presentation Exchange to do this.
 
 6. Create Presentations definitions for request below VC requests and [PEX is here](./avvanz-pex-query.json)
-  - Address Verification VC
-  - Personal Information Verification VC
-  - Education Verification VC
-  - Employment Verification VC
+  - Request Verified DL
+
+```
+{
+  "id": "verified_identity",
+  "input_descriptors": [
+    {
+      "id": "id_document_input",
+      "name": "Drivers License",
+      "constraints": {
+        "fields": [
+          {
+            "path": [
+              "$.issuer",
+              "$.vc.issuer",
+              "$.iss"
+            ],
+            "purpose": "Only accept credentials issued by Affinidi IDV",
+            "filter": {
+              "type": "string",
+              "pattern": "^did:web:idv.affinidi.com$"
+            }
+          },
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "Only accept IDV type VC",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "^VerifiedIdentityDocument$"
+              }
+            }
+          },
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "Only accept IDV supported document",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "^DriversLicense$"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+```
+- Request Verified Passport
+
+```
+{
+  "id": "verified_identity",
+  "input_descriptors": [
+    {
+      "id": "id_document_input",
+      "name": "Passport",
+      "constraints": {
+        "fields": [
+          {
+            "path": [
+              "$.issuer",
+              "$.vc.issuer",
+              "$.iss"
+            ],
+            "purpose": "Only accept credentials issued by Affinidi IDV",
+            "filter": {
+              "type": "string",
+              "pattern": "^did:web:idv.affinidi.com$"
+            }
+          },
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "Only accept IDV type VC",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "^VerifiedIdentityDocument$"
+              }
+            }
+          },
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "Only accept IDV supported document",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "^Passport$"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+- Request Any Verified Doc
+
+```
+{
+  "id": "verified_identity",
+  "input_descriptors": [
+    {
+      "id": "id_document_input",
+      "name": "ID Document",
+      "constraints": {
+        "fields": [
+          {
+            "path": [
+              "$.issuer",
+              "$.vc.issuer",
+              "$.iss"
+            ],
+            "purpose": "Only accept credentials issued by Affinidi IDV",
+            "filter": {
+              "type": "string",
+              "pattern": "^did:web:idv.affinidi.com$"
+            }
+          },
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "Only accept IDV type VC",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "^VerifiedIdentityDocument$"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
 
 
 
