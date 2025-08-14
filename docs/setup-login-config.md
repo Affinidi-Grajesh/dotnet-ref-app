@@ -1,4 +1,12 @@
-# Setup Login Configuration
+# Set up your Affinidi Login configuration
+
+Create your Affinidi Login Configuration with the [Affinidi CLI](https://github.com/affinidi/affinidi-cli#set-up-affinidi-login-for-your-applications) or at [Affinidi Portal](https://portal.affinidi.com/).
+
+Make sure to add `http://localhost:5068/signin-oidc` into authorized redirect URIs.
+
+Please read the [setup login-config guide](./docs/setup-login-config.md) to understand more about setting up login configuration.
+
+Fill in the client ID, secret and issuer URL in the `.env` file
 
 ## Create login configuration
 

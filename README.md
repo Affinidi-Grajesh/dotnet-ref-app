@@ -1,4 +1,8 @@
-# Affinidi DotNet Reference Implementation 
+# Affinidi DotNet Reference Implementation
+
+This is a template that showcases how you can enable your applications to issue credentials to users and store them in their Affinidi Vault. It accomplishes this through Affinidi Vault using the [OpenID for Verifiable Credential Issuance](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html) and [OpenID for Verifiable Presentations specification.](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) specification.
+
+Additonaly, It also show capabilites for Affinidi Verification, Affinidi Revocation.
 
 This project is a .NET 8.0 Razor web app, utilizing the power of Razor Pages for building dynamic web pages.
 
@@ -13,60 +17,40 @@ Make sure you have the following tools installed on your machine:
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download)
 - [Visual Studio code](https://code.visualstudio.com/) (or any preferred code editor)
 
-    #### PreRequisite check 
+#### PreRequisite check
 
-    Run this command to get the Dotnet version 
-    ```sh 
-    dotnet --version 
-    ```
-
-    You should get the output as below, please reinstall dotnet if the version is not 8.0.xxx
+Run this command to get the Dotnet version
     ```sh
-    8.0.100
+    dotnet --version
     ```
-### Navigate to the project directory:
-```sh
-cd Affinidi-Login-Reference-App
+
+You should get the output as below, please reinstall dotnet if the version is not 8.0.xxx
+    ```sh
+    8.0.XXX
+    ```
+
+copy `.env.example` to `.env`:
+
 ```
-
-
-### Create Login Configuration
-
-Create your Affinidi Login Configuration with the [Affinidi CLI](https://github.com/affinidi/affinidi-cli#set-up-affinidi-login-for-your-applications) or at [Affinidi Portal](https://portal.affinidi.com/).
-
-Make sure to add `http://localhost:5068/signin-oidc` into authorized redirect URIs.
-
-Please read the [setup login-config guide](./docs/setup-login-config.md) to understand more about setting up login configuration.
-
-Fill in the client ID, secret and issuer URL in the `.env` file
-
-### Update .env file:
-
-if the `.env` file is not present create a .env file 
-
-```sh
 cp .env.example .env
 ```
 
-Update the following fields in .env from data generated from the previous step for `OpenIDConnect`.
-
-`PROVIDER_CLIENT_ID:` Client ID generated during create login configuration
-
-`PROVIDER_CLIENT_SECRET:` Client Secret generated during create login configuration
-
-`PROVIDER_ISSUER:` Issuer Url from Login configuration 
-
-
-
-### Build and run the project:
+## Build and run the project:
 
 ```sh
 dotnet build
 dotnet run
 ```
 
-
 Then visit: http://localhost:5068/ to browse the reference app
+
+## Affinidi Configurations
+
+1. Click here to [Set up your environment variables for Affinidi Login configuration](./docs/setup-login-config.md)
+2. Click here to [Set up your Personnel Access Token to interact with Affinidi services](./docs/create-pat.md)
+3. Click here to [Set up your Credential Issuance Configuration](./docs/cis-configuration.md)
+4. Click here to [Set up your environment variables for Affinidi Iota configuration](./docs/setup-iota-config.md)
+5. Click here to [Set up your environment Variables for Affinidi IDV Configuration](./docs/setup-idv-config.md)
 
 ## Read More
 
