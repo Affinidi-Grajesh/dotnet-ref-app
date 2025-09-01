@@ -53,12 +53,10 @@ namespace Affinidi_Login_Demo_App.Util
 
     public class VerifierApi
     {
-        private readonly AuthProvider _authProvider;
         private readonly VerifierConfiguration _config;
 
-        public VerifierApi(AuthProvider authProvider, VerifierConfiguration config)
+        public VerifierApi(VerifierConfiguration config)
         {
-            _authProvider = authProvider;
             _config = config;
         }
 
@@ -76,7 +74,7 @@ namespace Affinidi_Login_Demo_App.Util
 
         private async Task<VerifyResponse?> PostVerificationRequestAsync(string url, object input)
         {
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            var token = AuthProviderClient.FetchProjectScopedToken();
 
             var options = new JsonSerializerOptions
             {
@@ -109,35 +107,22 @@ namespace Affinidi_Login_Demo_App.Util
     public class VerifierClient
     {
         private readonly VerifierApi _verifierApi;
-        private readonly AuthProviderParams _authProviderParams;
+        private string apiGatewayUrl;
 
         public VerifierClient()
         {
-            _authProviderParams = new AuthProviderParams
-            {
-                ProjectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
-                TokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
-                KeyId = Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
-                PrivateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
-                Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty,
-                ApiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
-                TokenEndpoint = Environment.GetEnvironmentVariable("TOKEN_ENDPOINT") ?? string.Empty
-            };
-
-            var authProvider = new AuthProvider(_authProviderParams);
-            var verifierConfig = new VerifierConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}" };
-            _verifierApi = new VerifierApi(authProvider, verifierConfig);
+            apiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty;
+            var verifierConfig = new VerifierConfiguration { BasePath = $"{apiGatewayUrl}" };
+            _verifierApi = new VerifierApi(verifierConfig);
         }
 
         public async Task<VerifyResponse?> VerifyCredentialsAsync(VerifyCredentialsInput input)
         {
-            Console.WriteLine($"VerifierClient: VerifyCredentialsAsync with Project ID {_authProviderParams.ProjectId}");
             return await _verifierApi.VerifyCredentialsAsync(input);
         }
 
         public async Task<VerifyResponse?> VerifyPresentationAsync(VerifyPresentationInput input)
         {
-            Console.WriteLine($"VerifierClient: VerifyPresentationAsync with Project ID {_authProviderParams.ProjectId}");
             return await _verifierApi.VerifyPresentationAsync(input);
         }
     }

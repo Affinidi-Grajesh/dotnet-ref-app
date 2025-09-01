@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Affinidi_Login_Demo_App.Util
 {
@@ -14,24 +13,10 @@ namespace Affinidi_Login_Demo_App.Util
 
     public class RevokeClient
     {
-        private readonly AuthProvider _authProvider;
         private readonly RevokeClientConfiguration _config;
 
         public RevokeClient()
         {
-            var authProviderParams = new AuthProviderParams
-            {
-                ProjectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
-                TokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
-                KeyId = Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
-                PrivateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
-                Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty,
-                ApiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
-                TokenEndpoint = Environment.GetEnvironmentVariable("TOKEN_ENDPOINT") ?? string.Empty
-            };
-
-            _authProvider = new AuthProvider(authProviderParams);
-
             _config = new RevokeClientConfiguration
             {
                 BasePath = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
@@ -42,7 +27,7 @@ namespace Affinidi_Login_Demo_App.Util
 
         private async Task<string?> SendRequestAsync(HttpMethod method, string url, object? body = null)
         {
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            var token = AuthProviderClient.FetchProjectScopedToken();
 
             using var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

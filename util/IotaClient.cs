@@ -76,18 +76,16 @@ namespace Affinidi_Login_Demo_App.Util
 
     public class IotaApi
     {
-        AuthProvider _authProvider;
         IotaConfiguration _config;
-        public IotaApi(AuthProvider authProvider, IotaConfiguration config)
+        public IotaApi(IotaConfiguration config)
         {
-            _authProvider = authProvider;
             _config = config;
         }
         public virtual async Task<InitiateDataSharingResponse?> IotaStart(InitiateDataSharingRequestInput input)
         {
             var localVarPath = $"ais/v1/initiate-data-sharing-request";
             var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            var token = AuthProviderClient.FetchProjectScopedToken();
 
             // Use System.Text.Json with options to ignore null values
             var options = new JsonSerializerOptions
@@ -131,7 +129,7 @@ namespace Affinidi_Login_Demo_App.Util
         {
             var localVarPath = $"ais/v1/fetch-iota-response";
             var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            var token = AuthProviderClient.FetchProjectScopedToken();
 
             // Use System.Text.Json with options to ignore null values
             var options = new JsonSerializerOptions
@@ -175,41 +173,27 @@ namespace Affinidi_Login_Demo_App.Util
     public class IotaClient
     {
         private readonly IotaApi _iotaApi;
-        private readonly AuthProviderParams _authProviderParams;
+        private string apiGatewayUrl;
 
         public IotaClient()
         {
 
-            _authProviderParams = new AuthProviderParams
-            {
-                ProjectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
-                TokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
-                KeyId = Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
-                PrivateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
-                Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty,
-                ApiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
-                TokenEndpoint = Environment.GetEnvironmentVariable("TOKEN_ENDPOINT") ?? string.Empty
-            };
-            AuthProvider authProvider = new AuthProvider(_authProviderParams);
-
-
+            apiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty;
             // Assuming SDK configuration objects
-            var iotaConfig = new IotaConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}/ais" };
+            var iotaConfig = new IotaConfiguration { BasePath = $"{apiGatewayUrl}/ais" };
             Console.WriteLine($"Iota API Base Path: {iotaConfig.BasePath}");
-            _iotaApi = new IotaApi(authProvider, iotaConfig);
+            _iotaApi = new IotaApi(iotaConfig);
 
         }
 
         public async Task<InitiateDataSharingResponse?> Start(InitiateDataSharingRequestInput apiData)
         {
-            Console.WriteLine($"Iota Start called with Project ID: {_authProviderParams.ProjectId}");
             var response = await _iotaApi.IotaStart(apiData);
             return response;
         }
 
         public async Task<FetchIOTAVPResponse?> Complete(FetchIOTAVPResponseInput apiData)
         {
-            Console.WriteLine($"Iota Complete called with Project ID: {_authProviderParams.ProjectId}");
             var response = await _iotaApi.IotaComplete(apiData);
             return response;
         }

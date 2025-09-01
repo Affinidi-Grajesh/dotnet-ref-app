@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Affinidi_Login_Demo_App.Util
@@ -49,13 +43,13 @@ namespace Affinidi_Login_Demo_App.Util
     }
 
     public class IssuanceStatusResponse
-{
-    [JsonPropertyName("credential")]
-    public CredentialData? Credential { get; set; }
+    {
+        [JsonPropertyName("credential")]
+        public CredentialData? Credential { get; set; }
 
-    [JsonPropertyName("credentials")]
-    public List<CredentialData>? Credentials { get; set; }
-}
+        [JsonPropertyName("credentials")]
+        public List<CredentialData>? Credentials { get; set; }
+    }
 
 
     public class ApiResponse<T> { public T? Data { get; set; } }
@@ -64,18 +58,16 @@ namespace Affinidi_Login_Demo_App.Util
 
     public class IssuanceApi
     {
-        AuthProvider _authProvider;
         IssuanceConfiguration _config;
-        public IssuanceApi(AuthProvider authProvider, IssuanceConfiguration config)
+        public IssuanceApi(IssuanceConfiguration config)
         {
-            _authProvider = authProvider;
             _config = config;
         }
         public virtual async Task<ApiResponse<StartIssuanceResponse>> StartIssuanceAsync(string projectId, StartIssuanceInput input)
         {
             var localVarPath = $"cis/v1/{Uri.EscapeDataString(projectId)}/issuance/start";
             var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            var token = AuthProviderClient.FetchProjectScopedToken();
 
             // Use System.Text.Json with options to ignore null values
             var options = new JsonSerializerOptions
@@ -110,103 +102,65 @@ namespace Affinidi_Login_Demo_App.Util
             Console.WriteLine($"Issuance API error: {response.StatusCode}");
             return new ApiResponse<StartIssuanceResponse> { Data = null };
         }
-        public virtual async Task<ApiResponse<IssuanceStatusResponse>> GetIssuanceStatusAsync(
-
-    string issuanceId
-    )
-{
-    var projectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty;
-    var configurationId = Environment.GetEnvironmentVariable("CONFIGURATION_ID") ?? string.Empty;
-
-    var localVarPath = $"cis/v1/{Uri.EscapeDataString(projectId)}/configurations/{Uri.EscapeDataString(configurationId)}/issuances/{Uri.EscapeDataString(issuanceId)}/credentials";
-    var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
-    var token = await _authProvider.FetchProjectScopedTokenAsync();
-
-    using var httpClient = new HttpClient();
-    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-    var response = await httpClient.GetAsync(fullUrl);
-    if (response.IsSuccessStatusCode)
-    {
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var data = System.Text.Json.JsonSerializer.Deserialize<IssuanceStatusResponse>(responseBody);
-        Console.WriteLine($"Issuance Status API response: {responseBody}");
-        return new ApiResponse<IssuanceStatusResponse> { Data = data };
-    }
-    else
-    {
-        Console.WriteLine($"Issuance Status API error: {response.StatusCode}");
-        return new ApiResponse<IssuanceStatusResponse> { Data = null };
-    }
-}
-
-    }
-
-    // Custom DelegatingHandler to add the auth token to each request
-    public class AuthHandler : DelegatingHandler
-    {
-        private readonly AuthProvider _authProvider;
-
-        public AuthHandler(AuthProvider authProvider) : base(new HttpClientHandler())
+        public virtual async Task<ApiResponse<IssuanceStatusResponse>> GetIssuanceStatusAsync(string issuanceId)
         {
-            _authProvider = authProvider;
+            var projectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty;
+            var configurationId = Environment.GetEnvironmentVariable("CONFIGURATION_ID") ?? string.Empty;
+
+            var localVarPath = $"cis/v1/{Uri.EscapeDataString(projectId)}/configurations/{Uri.EscapeDataString(configurationId)}/issuances/{Uri.EscapeDataString(issuanceId)}/credentials";
+            var fullUrl = new Uri(new Uri(_config.BasePath), localVarPath).ToString();
+            var token = AuthProviderClient.FetchProjectScopedToken();
+
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await httpClient.GetAsync(fullUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var data = System.Text.Json.JsonSerializer.Deserialize<IssuanceStatusResponse>(responseBody);
+                Console.WriteLine($"Issuance Status API response: {responseBody}");
+                return new ApiResponse<IssuanceStatusResponse> { Data = data };
+            }
+            else
+            {
+                Console.WriteLine($"Issuance Status API error: {response.StatusCode}");
+                return new ApiResponse<IssuanceStatusResponse> { Data = null };
+            }
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            return await base.SendAsync(request, cancellationToken);
-        }
     }
 
     public class CredentialsClient
     {
         private readonly IssuanceApi _issuanceApi;
-        private readonly AuthProviderParams _authProviderParams;
+        private string apiGatewayUrl;
+        private string projectId;
 
         public CredentialsClient()
         {
-
-            _authProviderParams = new AuthProviderParams
-            {
-                ProjectId = System.Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
-                TokenId = System.Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
-                KeyId = System.Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
-                PrivateKey = System.Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
-                Passphrase = System.Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty,
-                ApiGatewayUrl = System.Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
-                TokenEndpoint = System.Environment.GetEnvironmentVariable("TOKEN_ENDPOINT") ?? string.Empty
-            };
-            AuthProvider authProvider = new AuthProvider(_authProviderParams);
-
-
+            apiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty;
+            projectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty;
             // Assuming SDK configuration objects
-            var issuanceConfig = new IssuanceConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}/cis" };
+            var issuanceConfig = new IssuanceConfiguration { BasePath = $"{apiGatewayUrl}/cis" };
             Console.WriteLine($"Issuance API Base Path: {issuanceConfig.BasePath}");
-            _issuanceApi = new IssuanceApi(authProvider, issuanceConfig);
+            _issuanceApi = new IssuanceApi(issuanceConfig);
 
 
         }
 
-        public async Task<StartIssuanceResponse> IssuanceStart(StartIssuanceInput apiData)
+        public async Task<StartIssuanceResponse?> IssuanceStart(StartIssuanceInput apiData)
         {
-            Console.WriteLine($"StartIssuanceAsync called with Project ID: {_authProviderParams.ProjectId}");
-            var response = await _issuanceApi.StartIssuanceAsync(_authProviderParams.ProjectId, apiData);
+            var response = await _issuanceApi.StartIssuanceAsync(projectId, apiData);
             return response.Data;
         }
 
 
-
-        public async Task<IssuanceStatusResponse> IssuanceStatus(string issuanceId)
+        public async Task<IssuanceStatusResponse?> IssuanceStatus(string issuanceId)
         {
             var response = await _issuanceApi.GetIssuanceStatusAsync(issuanceId);
             return response.Data;
         }
-
-
     }
-
-
 
 }
