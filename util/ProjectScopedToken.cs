@@ -79,7 +79,7 @@ namespace Affinidi_Login_Demo_App.Util
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine($"HTTP request failed: {ex.Message}");
+                //Console.WriteLine($"HTTP request failed: {ex.Message}");
                 return null;
             }
         }
@@ -92,7 +92,7 @@ namespace Affinidi_Login_Demo_App.Util
                 return null;
             }
 
-            try { 
+            try {
                 using var httpClient = new HttpClient();
                 var requestUrl = $"{apiGatewayUrl}/iam/v1/sts/create-project-scoped-token";
                 var payload = new { projectId };
@@ -112,7 +112,7 @@ namespace Affinidi_Login_Demo_App.Util
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine($"HTTP request failed: {ex.Message}");
+                //Console.WriteLine($"HTTP request failed: {ex.Message}");
                 return null;
             }
         }

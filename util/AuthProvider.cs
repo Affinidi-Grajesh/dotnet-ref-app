@@ -69,14 +69,13 @@ namespace Affinidi_Login_Demo_App.Util
 
         public async Task<string> FetchProjectScopedTokenAsync()
         {
-             
+            //Console.WriteLine($"Fetching project-scoped token for Project ID: {projectId}");
             bool shouldRefreshToken = await ShouldRefreshToken();
             if (shouldRefreshToken)
             {
                 projectScopedToken = await _projectScopedTokenInstance.FetchProjectScopedTokenAsync(apiGatewayUrl, projectId, tokenId, tokenEndpoint, privateKey, keyId, passphrase);
             }
-
-           
+            //Console.WriteLine($"Using project-scoped token: {projectScopedToken}");
 
             return projectScopedToken;
         }

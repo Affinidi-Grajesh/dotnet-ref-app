@@ -98,7 +98,7 @@ namespace Affinidi_Login_Demo_App.Util
 
             var jsonPayload = JsonSerializer.Serialize(input, options);
 
-            Console.WriteLine($"Iota Start API request: {jsonPayload}");
+            //Console.WriteLine($"Iota Start API request: {jsonPayload}");
             //Console.WriteLine($"Authorization token: {token}");
 
             using var httpClient = new HttpClient();
@@ -114,15 +114,15 @@ namespace Affinidi_Login_Demo_App.Util
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = JsonSerializer.Deserialize<ApiResponseWrapper<InitiateDataSharingResponse>>(responseBody);
-                Console.WriteLine($"Jwt: {apiResponse.Data?.Jwt}");
-                Console.WriteLine($"CorrelationId: {apiResponse.Data?.CorrelationId}");
-                Console.WriteLine($"TransactionId: {apiResponse.Data?.TransactionId}");
+                //Console.WriteLine($"Jwt: {apiResponse.Data?.Jwt}");
+                //Console.WriteLine($"CorrelationId: {apiResponse.Data?.CorrelationId}");
+                //Console.WriteLine($"TransactionId: {apiResponse.Data?.TransactionId}");
                 return apiResponse.Data;
             }
             else
             {
-                Console.WriteLine($"Iota API error: {response.StatusCode}");
-                Console.WriteLine($"Error details: {responseBody}");
+                //Console.WriteLine($"Iota API error: {response.StatusCode}");
+                //Console.WriteLine($"Error details: {responseBody}");
                 return null;
             }
         }
@@ -142,7 +142,7 @@ namespace Affinidi_Login_Demo_App.Util
 
             var jsonPayload = JsonSerializer.Serialize(input, options);
 
-            Console.WriteLine($"Iota Complete API request: {jsonPayload}");
+            //Console.WriteLine($"Iota Complete API request: {jsonPayload}");
             //Console.WriteLine($"Authorization token: {token}");
 
             using var httpClient = new HttpClient();
@@ -154,19 +154,19 @@ namespace Affinidi_Login_Demo_App.Util
             var response = await httpClient.SendAsync(request);
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"response details: {responseBody}");
+            //Console.WriteLine($"response details: {responseBody}");
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = JsonSerializer.Deserialize<FetchIOTAVPResponse>(responseBody);
-                Console.WriteLine($"CorrelationId: {apiResponse.CorrelationId}");
-                Console.WriteLine($"PresentationSubmission: {apiResponse.PresentationSubmission}");
-                Console.WriteLine($"VpToken: {apiResponse.VpToken}");
+                //Console.WriteLine($"CorrelationId: {apiResponse.CorrelationId}");
+                //Console.WriteLine($"PresentationSubmission: {apiResponse.PresentationSubmission}");
+                //Console.WriteLine($"VpToken: {apiResponse.VpToken}");
                 return apiResponse;
             }
             else
             {
-                Console.WriteLine($"Iota Complete API error: {response.StatusCode}");
-                Console.WriteLine($"Error details: {responseBody}");
+                //Console.WriteLine($"Iota Complete API error: {response.StatusCode}");
+                //Console.WriteLine($"Error details: {responseBody}");
                 return null;
             }
         }
@@ -195,21 +195,21 @@ namespace Affinidi_Login_Demo_App.Util
 
             // Assuming SDK configuration objects
             var iotaConfig = new IotaConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}/ais" };
-            Console.WriteLine($"Iota API Base Path: {iotaConfig.BasePath}");
+            //Console.WriteLine($"Iota API Base Path: {iotaConfig.BasePath}");
             _iotaApi = new IotaApi(authProvider, iotaConfig);
 
         }
 
         public async Task<InitiateDataSharingResponse?> Start(InitiateDataSharingRequestInput apiData)
         {
-            Console.WriteLine($"Iota Start called with Project ID: {_authProviderParams.ProjectId}");
+            //Console.WriteLine($"Iota Start called with Project ID: {_authProviderParams.ProjectId}");
             var response = await _iotaApi.IotaStart(apiData);
             return response;
         }
 
         public async Task<FetchIOTAVPResponse?> Complete(FetchIOTAVPResponseInput apiData)
         {
-            Console.WriteLine($"Iota Complete called with Project ID: {_authProviderParams.ProjectId}");
+            //Console.WriteLine($"Iota Complete called with Project ID: {_authProviderParams.ProjectId}");
             var response = await _iotaApi.IotaComplete(apiData);
             return response;
         }

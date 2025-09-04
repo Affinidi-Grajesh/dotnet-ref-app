@@ -62,7 +62,7 @@ namespace Affinidi_Login_Demo_App.Pages
                         VerifiableCredentials = new List<object> { parsedData }
                     };
 
-                    Console.WriteLine("Calling VerifyCredentialsAsync...");
+                    //Console.WriteLine("Calling VerifyCredentialsAsync...");
                     var response = await _verifierClient.VerifyCredentialsAsync(input);
 
                     VerificationResult = response != null
@@ -76,7 +76,7 @@ namespace Affinidi_Login_Demo_App.Pages
                         VerifiablePresentation = parsedData
                     };
 
-                    Console.WriteLine("Calling VerifyPresentationAsync...");
+                    //Console.WriteLine("Calling VerifyPresentationAsync...");
                     var response = await _verifierClient.VerifyPresentationAsync(input);
 
                     VerificationResult = response != null

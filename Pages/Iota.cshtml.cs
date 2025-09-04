@@ -47,7 +47,7 @@ namespace Affinidi_Login_Demo_App.Pages
             {
                 var correlationId = HttpContext.Session.GetString("CorrelationId");
                 var transactionId = HttpContext.Session.GetString("TransactionId");
-                Console.WriteLine($"Iota Complete called with CorrelationId: {correlationId}, TransactionId: {transactionId}, ResponseCode: {responseCode}");
+                //Console.WriteLine($"Iota Complete called with CorrelationId: {correlationId}, TransactionId: {transactionId}, ResponseCode: {responseCode}");
                 if (string.IsNullOrEmpty(correlationId) || string.IsNullOrEmpty(transactionId))
                 {
                     return RedirectToPage();

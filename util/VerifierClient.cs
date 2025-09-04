@@ -85,14 +85,14 @@ namespace Affinidi_Login_Demo_App.Util
             };
 
             var jsonPayload = JsonSerializer.Serialize(input, options);
-            Console.WriteLine($"Verifier API request to {url}: {jsonPayload}");
+            //Console.WriteLine($"Verifier API request to {url}: {jsonPayload}");
 
             using var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await httpClient.PostAsync(url, new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json"));
             var responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Verifier API response: {responseBody}");
+            //Console.WriteLine($"Verifier API response: {responseBody}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -100,7 +100,7 @@ namespace Affinidi_Login_Demo_App.Util
             }
             else
             {
-                Console.WriteLine($"Verifier API error: {response.StatusCode}");
+                //Console.WriteLine($"Verifier API error: {response.StatusCode}");
                 return null;
             }
         }
@@ -131,13 +131,13 @@ namespace Affinidi_Login_Demo_App.Util
 
         public async Task<VerifyResponse?> VerifyCredentialsAsync(VerifyCredentialsInput input)
         {
-            Console.WriteLine($"VerifierClient: VerifyCredentialsAsync with Project ID {_authProviderParams.ProjectId}");
+            //Console.WriteLine($"VerifierClient: VerifyCredentialsAsync with Project ID {_authProviderParams.ProjectId}");
             return await _verifierApi.VerifyCredentialsAsync(input);
         }
 
         public async Task<VerifyResponse?> VerifyPresentationAsync(VerifyPresentationInput input)
         {
-            Console.WriteLine($"VerifierClient: VerifyPresentationAsync with Project ID {_authProviderParams.ProjectId}");
+            //Console.WriteLine($"VerifierClient: VerifyPresentationAsync with Project ID {_authProviderParams.ProjectId}");
             return await _verifierApi.VerifyPresentationAsync(input);
         }
     }

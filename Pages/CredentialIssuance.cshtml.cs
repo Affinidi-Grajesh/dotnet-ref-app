@@ -53,15 +53,15 @@ namespace Affinidi_Login_Demo_App.Pages
             };
 
             var credentialsClient = new CredentialsClient();
-            Console.WriteLine($"Issuance Input: {JsonConvert.SerializeObject(issuanceInput, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })}");
+            //Console.WriteLine($"Issuance Input: {JsonConvert.SerializeObject(issuanceInput, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })}");
             var issuanceResponse = await credentialsClient.IssuanceStart(issuanceInput);
-            Console.WriteLine($"Issuance Response: {JsonConvert.SerializeObject(issuanceResponse)}");
+            //Console.WriteLine($"Issuance Response: {JsonConvert.SerializeObject(issuanceResponse)}");
 
             var credentialOfferUri = issuanceResponse?.CredentialOfferUri ?? "";
             var vaultUrl = Environment.GetEnvironmentVariable("PUBLIC_VAULT_URL") ?? "https://vault.affinidi.com";
             var claimUrl = $"{vaultUrl}/claim?credential_offer_uri={Uri.EscapeDataString(credentialOfferUri)}";
 
-            Console.WriteLine($"Claim URL: {claimUrl}");
+            //Console.WriteLine($"Claim URL: {claimUrl}");
 
             TempData["IssuanceMessage"] = $"{credentialTypeId} Credential issued. Check logs for details.";
             TempData["CredentialOfferUri"] = credentialOfferUri;
@@ -481,15 +481,15 @@ namespace Affinidi_Login_Demo_App.Pages
             };
 
             var credentialsClient = new CredentialsClient();
-            Console.WriteLine($"Batch Issuance Input: {JsonConvert.SerializeObject(issuanceInput, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })}");
+            //Console.WriteLine($"Batch Issuance Input: {JsonConvert.SerializeObject(issuanceInput, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })}");
             var issuanceResponse = await credentialsClient.IssuanceStart(issuanceInput);
-            Console.WriteLine($"Batch Issuance Response: {JsonConvert.SerializeObject(issuanceResponse)}");
+            //Console.WriteLine($"Batch Issuance Response: {JsonConvert.SerializeObject(issuanceResponse)}");
 
             var credentialOfferUri = issuanceResponse?.CredentialOfferUri ?? "";
             var vaultUrl = Environment.GetEnvironmentVariable("PUBLIC_VAULT_URL") ?? "https://vault.affinidi.com";
             var claimUrl = $"{vaultUrl}/claim?credential_offer_uri={Uri.EscapeDataString(credentialOfferUri)}";
 
-            Console.WriteLine($"Claim URL: {claimUrl}");
+            //Console.WriteLine($"Claim URL: {claimUrl}");
 
             TempData["IssuanceMessage"] = "Batch Credential issuance process completed. Check logs for details.";
             TempData["ClaimUrl"] = claimUrl;

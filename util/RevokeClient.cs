@@ -57,7 +57,7 @@ namespace Affinidi_Login_Demo_App.Util
                 };
                 var json = JsonSerializer.Serialize(body, options);
                 content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                Console.WriteLine($"Revoke API request body: {json}");
+                //Console.WriteLine($"Revoke API request body: {json}");
             }
 
             var request = new HttpRequestMessage(method, url)
@@ -68,7 +68,7 @@ namespace Affinidi_Login_Demo_App.Util
             var response = await httpClient.SendAsync(request);
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine($"Revoke API response ({response.StatusCode}): {responseBody}");
+            //Console.WriteLine($"Revoke API response ({response.StatusCode}): {responseBody}");
             return responseBody;
         }
 

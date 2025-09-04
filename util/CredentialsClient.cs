@@ -86,8 +86,8 @@ namespace Affinidi_Login_Demo_App.Util
 
             var jsonPayload = System.Text.Json.JsonSerializer.Serialize(input, options);
 
-            Console.WriteLine($"Issuance API request: {jsonPayload}");
-            Console.WriteLine($"Authorization token: {token}");
+            //Console.WriteLine($"Issuance API request: {jsonPayload}");
+            //Console.WriteLine($"Authorization token: {token}");
 
             using var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -100,14 +100,14 @@ namespace Affinidi_Login_Demo_App.Util
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var data = System.Text.Json.JsonSerializer.Deserialize<StartIssuanceResponse>(responseBody);
-                Console.WriteLine($"Issuance API response: {responseBody}");
-                Console.WriteLine($"CredentialOfferUri: {data?.CredentialOfferUri}");
-                Console.WriteLine($"IssuanceId: {data?.IssuanceId}");
-                Console.WriteLine($"ExpiresIn: {data?.ExpiresIn}");
-                Console.WriteLine($"TxCode: {data?.TxCode}");
+                //Console.WriteLine($"Issuance API response: {responseBody}");
+                //Console.WriteLine($"CredentialOfferUri: {data?.CredentialOfferUri}");
+                //Console.WriteLine($"IssuanceId: {data?.IssuanceId}");
+                //Console.WriteLine($"ExpiresIn: {data?.ExpiresIn}");
+                //Console.WriteLine($"TxCode: {data?.TxCode}");
                 return new ApiResponse<StartIssuanceResponse> { Data = data };
             }
-            Console.WriteLine($"Issuance API error: {response.StatusCode}");
+            //Console.WriteLine($"Issuance API error: {response.StatusCode}");
             return new ApiResponse<StartIssuanceResponse> { Data = null };
         }
         public virtual async Task<ApiResponse<IssuanceStatusResponse>> GetIssuanceStatusAsync(
@@ -130,12 +130,12 @@ namespace Affinidi_Login_Demo_App.Util
     {
         var responseBody = await response.Content.ReadAsStringAsync();
         var data = System.Text.Json.JsonSerializer.Deserialize<IssuanceStatusResponse>(responseBody);
-        Console.WriteLine($"Issuance Status API response: {responseBody}");
+        //Console.WriteLine($"Issuance Status API response: {responseBody}");
         return new ApiResponse<IssuanceStatusResponse> { Data = data };
     }
     else
     {
-        Console.WriteLine($"Issuance Status API error: {response.StatusCode}");
+        //Console.WriteLine($"Issuance Status API error: {response.StatusCode}");
         return new ApiResponse<IssuanceStatusResponse> { Data = null };
     }
 }
@@ -183,7 +183,7 @@ namespace Affinidi_Login_Demo_App.Util
 
             // Assuming SDK configuration objects
             var issuanceConfig = new IssuanceConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}/cis" };
-            Console.WriteLine($"Issuance API Base Path: {issuanceConfig.BasePath}");
+            //Console.WriteLine($"Issuance API Base Path: {issuanceConfig.BasePath}");
             _issuanceApi = new IssuanceApi(authProvider, issuanceConfig);
 
 
@@ -191,7 +191,7 @@ namespace Affinidi_Login_Demo_App.Util
 
         public async Task<StartIssuanceResponse> IssuanceStart(StartIssuanceInput apiData)
         {
-            Console.WriteLine($"StartIssuanceAsync called with Project ID: {_authProviderParams.ProjectId}");
+            //Console.WriteLine($"StartIssuanceAsync called with Project ID: {_authProviderParams.ProjectId}");
             var response = await _issuanceApi.StartIssuanceAsync(_authProviderParams.ProjectId, apiData);
             return response.Data;
         }
