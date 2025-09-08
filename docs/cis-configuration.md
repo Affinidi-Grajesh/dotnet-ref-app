@@ -3,27 +3,27 @@
 <div align="center">
   <img src="./images/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi Credential Issuance" width="180"/>
 </div>
->
+
 
 > [!IMPORTANT]
 > This guide is for learning, experimentation, and prototyping only.
 > **Do not use this configuration as-is in production environments.**
 > Please review, test, and secure your implementation before deploying to production.
 
----
+
 
 ## 📖 Table of Contents
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [Pre-Requisite](#pre-requisite)
 - [Setup Instructions](#setup-instructions)
+- [Environment Variable Setup](#environment-variable-setup)
 - [Supported Schemas](#supported-schemas)
 - [Sample Configuration](#sample-configuration)
 - [Code Reference](#code-reference)
 - [Further Reading](#further-reading)
 - [Disclaimer](#disclaimer)
 
----
 
 ## 🧭 Overview
 
@@ -162,6 +162,36 @@ You can refer the [Affinidi Documentation](https://docs.affinidi.com/dev-tools/a
 4. **Add Supported Schemas:**
    Click "Add new item" under `Supported Schemas` and enter the following:
 
+## ⚙️ Environment Variable Setup
+
+To enable Affinidi Credential Issuance Service and Personal Access Token authentication in your application, update your `.env` file (or relevant environment configuration) with the following variables:
+
+```env
+# CIS Config
+CONFIGURATION_ID=""
+BACKGROUND_CHECK_CREDENTIAL_TYPE_ID="DigitalCredential"
+PERSONAL_INFORMATION_CREDENTIAL_TYPE_ID="PersonalInformationVerification"
+ADDRESS_CREDENTIAL_TYPE_ID="AddressVerification"
+EDUCATION_CREDENTIAL_TYPE_ID="EducationVerification"
+EMPLOYMENT_CREDENTIAL_TYPE_ID="EmploymentVerification"
+
+# Personal Access Token Config
+VAULT_URL="https://vault.affinidi.com"
+API_GATEWAY_URL="https://apse1.api.affinidi.io"
+TOKEN_ENDPOINT="https://apse1.auth.developer.affinidi.io/auth/oauth2/token"
+PROJECT_ID=""
+TOKEN_ID=""
+PRIVATE_KEY=""
+```
+
+**Instructions:**
+- Fill in the values for `CONFIGURATION_ID`, `PROJECT_ID`, `TOKEN_ID`, and `PRIVATE_KEY` using the details from your Affinidi Portal and Personal Access Token creation steps.
+- The credential type IDs should match those configured in your CIS setup.
+- Ensure your `.env` file is kept secure and never committed to source control.
+
+> [!IMPORTANT]
+> These environment variables are required for your application to interact with Affinidi CIS and Vault services.
+> Double-check all values for accuracy to avoid authentication
 
 ## 📚 Supported Schemas
 
@@ -173,6 +203,8 @@ You can refer the [Affinidi Documentation](https://docs.affinidi.com/dev-tools/a
 | EducationVerification           | https://schema.affinidi.io/TEducationVerificationV1R0.json           | https://schema.affinidi.io/TEducationVerificationV1R0.jsonld           |
 | DigitalCredential               | https://schema.affinidi.io/personalInfoV1R0.json                     | https://schema.affinidi.io/personalInfoV1R0.jsonld                     |
 
+> [!NOTE]
+> You can create as many schema as per your usecase from [schema builder](https://docs.affinidi.com/docs/affinidi-elements/schema-builder/)
 
 ## 📝 Sample Configuration
 
