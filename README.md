@@ -1,18 +1,26 @@
-# <Project Name>
+# 🚀 Affinidi Reference App
 
 <div align="center">
-  <img src="./docs/Affinidi%20Stacked_FC_RGB.jpg" alt="Banner or Logo" width="180"/>
+  <img src="./docs/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi Logo" width="180"/>
 </div>
 
-> A reference application showcasing how to integrate **Affinidi Services** using **Affinidi Tech Stack**.
+> &nbsp;
 
-> This project is a .NET 8.0 Razor web app, utilizing the power of Razor Pages for building dynamic web pages.
+> **Welcome, Developer!**
+> This project is a community-driven reference implementation for integrating **Affinidi Services** using the modern .NET 8.0 stack and Razor Pages.
 
+> [!WARNING]
+> This repository is intended for learning, experimentation, and prototyping only.
+> **Do not use this code as-is in production environments.**
+> Affinidi provides no warranty or guarantee for copy-paste usage.
+> Please review, test, and secure your implementation before deploying to production.
+> &nbsp;
 
 ## 📖 Table of Contents
 - [Overview](#-overview)
 - [Features to Explore](#-features-to-explore)
 - [Quickstart](#-quickstart)
+- [Affinidi Configurations](#affinidi-configurations)
 - [Read More](#read-more)
 - [Telemetry](#telemetry)
 - [Feedback, Support, and Community](#feedback-support-and-community)
@@ -34,87 +42,82 @@ It is built with **Dot Net 8.0** and **Razor Pages** and serves as a **reference
 
 ## ✨ Features to Explore
 
-Below are the main features you can try in this reference app. Each feature links to the official Affinidi documentation and setup guides for a smooth onboarding experience:
+Explore these features with step-by-step guides and official documentation:
 
 - 🔑 **Credential Issuance ([OpenID4VCI](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html))**
   Issue verifiable credentials using Affinidi's Credential Issuance Service.
-  - 👉 [Setup Issuance Configuration](./docs/cis-configuration.md)
-  - 👉 [Affinidi Credential Issuance Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/)
+  [Setup Guide](./docs/cis-configuration.md) | [Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/)
 
 - 🔗 **Credential Sharing ([OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html))**
-  Share credentials securely using Affinidi Iota Framework.
-  - 👉 [Setup Iota Configuration](./docs/setup-iota-config.md)
-  - 👉 [Affinidi Iota Docs](https://docs.affinidi.com/docs/affinidi-elements/iota/)
+  Share credentials securely with Affinidi Iota Framework.
+  [Setup Guide](./docs/setup-iota-config.md) | [Docs](https://docs.affinidi.com/docs/affinidi-elements/iota/)
 
 - 🛡️ **Identity Verification (IDV)**
-  Verify user identity using Affinidi's IDV service.
-  - 👉 [Setup IDV Configuration](./docs/setup-idv-config.md)
-  - 👉 [Affinidi IDV Docs](https://docs.affinidi.com/docs/affinidi-vault/identity-verification/)
+  Verify user identity using Affinidi’s IDV service.
+  [Setup Guide](./docs/setup-idv-config.md) | [Docs](https://docs.affinidi.com/docs/affinidi-vault/identity-verification/)
 
-- 🗄️ **Secure Storage in Affinidi Vault**
+- 🗄️ **Affinidi Vault Integration**
   Store and manage credentials securely in Affinidi Vault.
-  - 👉 [Affinidi Vault Docs](https://docs.affinidi.com/docs/affinidi-vault/)
+  [Docs](https://docs.affinidi.com/docs/affinidi-vault/)
 
 - ✅ **Credential Verification**
-  Verify Verifiable Credentials and Presentations using Affinidi's verification service.
-  - 👉 [Affinidi Credential Verification Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-verification/)
+  Verify credentials and presentations using Affinidi’s verification service.
+  [Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-verification/)
 
 - ⚡ **Credential Revocation**
-  Revoke credentials using Affinidi's Revocation Service.
-  - 👉 [Affinidi Revocation Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/revocation/)
+  Revoke credentials using Affinidi’s Revocation Service.
+  [Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/revocation/)
 
 
 For each feature, follow the linked setup guides to configure your environment and explore the documentation for deeper understanding and advanced usage.
 
 ## 🚀 Quickstart
-Make sure you have the following tools installed on your machine:
 
+**Prerequisites:**
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download)
-- [Visual Studio code](https://code.visualstudio.com/) (or any preferred code editor)
+- [Visual Studio Code](https://code.visualstudio.com/) or your favorite editor
 
-### PreRequisite check
-
-Run this command to get the Dotnet version
-    ```sh
-    dotnet --version
-    ```
-
-You should get the output as below, please reinstall dotnet if the version is not 8.0.xxx
-    ```sh
-    8.0.XXX
-    ```
-
+**Check your .NET version:**
 ```sh
-# 1. Clone the repo
+dotnet --version
+# Should output: 8.0.xxx
+```
+
+**Get started:**
+```sh
 git clone https://github.com/affinidi/<repo-name>.git
 cd <repo-name>
-
-# 2. Copy environment variables
 cp .env.example .env
-
-# 3. Build and run the project:
-
 dotnet build
 dotnet run
 ```
+Visit [http://localhost:5068/](http://localhost:5068/) to explore the app!
 
-> Visit: http://localhost:5068/ to browse the reference app
+---
 
 ## Affinidi Configurations
 
-1. Click here to [Set up your environment variables for Affinidi Login configuration](./docs/setup-login-config.md)
-2. Click here to [Set up your Personnel Access Token to interact with Affinidi services](./docs/create-pat.md)
-3. Click here to [Set up your Credential Issuance Configuration](./docs/cis-configuration.md)
-4. Click here to [Set up your environment variables for Affinidi Iota configuration](./docs/setup-iota-config.md)
-5. Click here to [Set up your environment Variables for Affinidi IDV Configuration](./docs/setup-idv-config.md)
+- [Set up Affinidi Login](./docs/setup-login-config.md)
+- [Create your Personal Access Token](./docs/create-pat.md)
+- [Configure Credential Issuance](./docs/cis-configuration.md)
+- [Configure Iota Sharing](./docs/setup-iota-config.md)
+- [Configure IDV](./docs/setup-idv-config.md)
+
+---
 
 ## Read More
 
-Explore our [documentation](https://docs.affinidi.com/docs/) and [labs](https://docs.affinidi.com/labs/) to learn more about integrating Affinidi Login with Affinidi Vault.
+- [Affinidi Documentation](https://docs.affinidi.com/docs/)
+- [Affinidi Labs](https://docs.affinidi.com/labs/)
+
+---
 
 ## Telemetry
 
-Affinidi collects usage data to improve our products and services. For information on what data we collect and how we use your data, please refer to our [Privacy Notice](https://www.affinidi.com/privacy-notice).
+Affinidi collects usage data to improve our products and services.
+See our [Privacy Notice](https://www.affinidi.com/privacy-notice) for details.
+
+---
 
 ## Feedback, Support, and Community
 
