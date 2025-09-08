@@ -265,8 +265,9 @@ When the **"Issue Personal Info Credential"** button is clicked in the app, the 
 - Credential is issued with revocable/expiry options if selected
 - Result is shown to the user
 
-Refer to `CredentialIssuance.cshtml` and `CredentialIssuance.cshtml.cs` for implementation details.
+Refer to [CredentialIssuance.cshtml](/Pages/CredentialIssuance.cshtml) and [CredentialIssuance.cshtml.cs](/Pages/CredentialIssuance.cshtml.cs) and Affinidi Service [CredentialsClient.cs](/util/CredentialsClient.cs) for implementation details.
 
+For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [ProjectScopedToken.cs](/util/ProjectScopedToken.cs)
 
 ## 📚 Further Reading
 

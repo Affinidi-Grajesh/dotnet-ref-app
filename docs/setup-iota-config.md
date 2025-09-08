@@ -448,9 +448,9 @@ When the **"Query Personal Info Credential"** button is clicked, the following p
 - User completes credential sharing flow
 - Result is displayed on the page
 
-Refer to `Iota.cshtml` and `Iota.cshtml.cs` for implementation details.
+Refer to [Iota.cshtml](/Pages/Iota.cshtml) and [Iota.cshtml.cs](/Pages/Iota.cshtml.cs) and Affinidi Service [IotaClient.cs](/util/IotaClient.cs) for implementation details.
 
-
+For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [ProjectScopedToken.cs](/util/ProjectScopedToken.cs)
 
 ## 📚 Further Reading
 

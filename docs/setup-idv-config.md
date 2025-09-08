@@ -148,7 +148,7 @@ You can refer the [Affinidi Documentation](https://docs.affinidi.com/dev-tools/a
      - **Enable Identity Verification (IDV):** Check the box.
      - **Data Sharing Flow Mode:** Redirect (reference implementation).
      - **Vault JWT Expiration Time:** Set credential offer lifetime.
-     - **Redirect URLs:** `http://localhost:5068/Iota`
+     - **Redirect URLs:** `http://localhost:5068/idv`
    - Optionally enable:
      - **Verification:** Verify credentials shared by users.
      - **Consent Audit Log:** Store user consent logs.
@@ -166,7 +166,7 @@ You can refer the [Affinidi Documentation](https://docs.affinidi.com/dev-tools/a
 Update your `.env` file with the required configuration:
 
 ```env
-# IDV Config Redirect flow : Callback should be is `http://localhost:5068/Iota`
+# IDV Config Redirect flow : Callback should be is `http://localhost:5068/idv`
 IDV_CONFIG_ID="your-config-id"
 IDV_CREDENTIAL_QUERY_DL="your-drivers-license-query-id"
 IDV_CREDENTIAL_QUERY_PASSPORT="your-passport-query-id"
@@ -385,9 +385,9 @@ When the **"Query Verified DL"** button is clicked, the following process occurs
 - User completes credential sharing flow
 - Result is displayed on the page
 
-Refer to `IDV.cshtml` and `IDV.cshtml.cs` for implementation details.
+Refer to [IDV.cshtml](/Pages/IDV.cshtml) and [IDV.cshtml.cs](/Pages/IDV.cshtml.cs) and Affinidi Service [IotaClient.cs](/util/IotaClient.cs) for implementation details.
 
-
+For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [ProjectScopedToken.cs](/util/ProjectScopedToken.cs)
 
 ## 📚 Further Reading
 

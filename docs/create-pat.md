@@ -126,7 +126,7 @@ PRIVATE_KEY=""
 - Fill in the values using the details from your PAT creation response.
 - Ensure your `.env` file is kept secure and never committed to source control.
 
-
+For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [ProjectScopedToken.cs](/util/ProjectScopedToken.cs)
 
 ## 📚 Further Reading
 
