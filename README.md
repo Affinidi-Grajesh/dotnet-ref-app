@@ -3,7 +3,7 @@
 <div align="center">
   <img src="./docs/images/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi Logo" width="180"/>
 </div>
->
+
 
 > **Welcome, Developer!**
 > This project is a community-driven reference implementation for integrating **Affinidi Services** using the modern .NET 8.0 stack and Razor Pages.
