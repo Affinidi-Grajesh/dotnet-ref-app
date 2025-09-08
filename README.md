@@ -43,7 +43,7 @@ It is built with **Dot Net 8.0** and **Razor Pages** and serves as a **reference
 Explore these features with step-by-step guides and official documentation:
 
 > [!NOTE]
-> **Ignore the feature if not required in your usecase.**
+> **If the feature is not relevant to your implementation, you may leave it unused.**
 
 
 - 🔐 **Affinidi Login ([OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)) for Secure Passwordless Login**
@@ -118,7 +118,6 @@ Visit [http://localhost:5068/](http://localhost:5068/) to explore the reference 
 ## Read More
 
 - [Affinidi Documentation](https://docs.affinidi.com/docs/)
-- [Affinidi Labs](https://docs.affinidi.com/labs/)
 
 ## Telemetry
 
