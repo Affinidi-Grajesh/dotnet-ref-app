@@ -37,7 +37,7 @@ It leverages the [OID4VP](https://openid.net/specs/openid-4-verifiable-presentat
   Set up wallets, enable IDV, configure redirect flow, and define presentation definitions for credential queries.
 
 - **Credential Query Flow:**
-  ![IDV Query Flow](./images/iota-redirect.png)
+  ![IDV Query Flow](./images/iota-idv.png)
 
 
 
@@ -394,7 +394,6 @@ For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [Pro
 - [Affinidi IDV Documentation](https://docs.affinidi.com/docs/affinidi-vault/identity-verification/)
 - [Affinidi Portal](https://portal.affinidi.com/)
 - [Presentation Exchange (PEX)](https://identity.foundation/presentation-exchange/)
-
 
 
 ## _Disclaimer_
