@@ -1,7 +1,7 @@
 # 🚀 Affinidi Reference App
 
 <div align="center">
-  <img src="./docs/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi Logo" width="180"/>
+  <img src="./docs/images/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi Logo" width="180"/>
 </div>
 
 
@@ -41,6 +41,10 @@ It is built with **Dot Net 8.0** and **Razor Pages** and serves as a **reference
 ## ✨ Features to Explore
 
 Explore these features with step-by-step guides and official documentation:
+
+> [!NOTE]
+> **Ignore the feature if not required in your usecase.**
+
 
 - 🔐 **Affinidi Login ([OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)) for Secure Passwordless Login**
   Easily enable passwordless authentication using verifiable presentations and Affinidi Login.
