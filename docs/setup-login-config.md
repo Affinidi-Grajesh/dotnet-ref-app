@@ -4,7 +4,7 @@
   <img src="./images/Affinidi Stacked_FC_RGB.jpg" alt="Affinidi Login Architecture" width="180"/>
 </div>
 
----
+>
 
 > ⚠️ **Warning:**
 > This documentation is intended for learning, experimentation, and prototyping only.
@@ -34,7 +34,7 @@ It is compatible with industry standards and simplifies authentication flows for
 Affinidi Login enables developers to adopt password-less authentication flows for their applications with decentralised identity controlled by the user. Affinidi Login can be integrated with applications that support OIDC flow.
 
 <div align="center">
-  <img src="./images/login-arch.png" alt="Affinidi Login Architecture" width="320"/>
+  <img src="./images/login-arch.png" alt="Affinidi Login Architecture" width="800"/>
 </div>
 
 
