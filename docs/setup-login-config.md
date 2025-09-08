@@ -44,12 +44,14 @@ Affinidi Login enables developers to adopt password-less authentication flows fo
 
 You can create your configuration using the [Affinidi CLI](https://github.com/affinidi/affinidi-cli#set-up-affinidi-login-for-your-applications) or via the [Affinidi Portal](https://portal.affinidi.com/).
 
-**Important:**
-Add `http://localhost:5068/signin-oidc` to your authorized redirect URIs.
+> [!IMPORTANT]
+> Add `http://localhost:5068/signin-oidc` to your authorized redirect URIs.
 
-Fill in the client ID, secret and issuer URL in the `.env` file
+### 2. Fill in Client Credentials
 
-## Create login configuration
+After creating your configuration, copy the `Client ID`, `Client Secret`, and `Issuer URL` into your `.env` file.
+
+## Configuration Example
 
 To create a Login Configuration, you can either use Affinidi CLI or [Affinidi Portal](https://portal.affinidi.com/login)
 
@@ -85,7 +87,7 @@ Follow the guide below if you haven’t installed yet
   - For Dotnet OpenIDConnect it would be `http://localhost:5068/signin-oidc`
 - If you are using Auth0 as an identity provider it would be `https://{auth0_domain}/login/callback`
 
-Sample response:
+**Sample response from Affinidi CLI**
 
 ```json
 {
@@ -109,9 +111,9 @@ Sample response:
 }
 ```
 
-> **Important**
->
-> Keep the `Client ID` and `Client Secret` safe that will be used later for setting up your IdP or your OIDC-compliant applications. Client Secret will only be available once.
+> [!IMPORTANT]
+> **Keep your Client ID and Client Secret secure.**
+> The **Client Secret** is only be shown once.
 
 3. Update login configuration
 
@@ -229,7 +231,6 @@ To enable a seamless passwordless login experience with Affinidi Login, refer to
 - Add Affinidi Login as an OIDC provider using `AddOpenIdConnect` in your `Startup.cs`.
 - Configure client credentials in your `.env` file.
 
----
 
 ## 💻 Code Reference
 
@@ -273,7 +274,6 @@ When the **Affinidi Login** button is clicked, the following flow is triggered:
 
 Refer to `Login.cshtml` and `Login.cshtml.cs` for the exact implementation details.
 
----
 
 ## 📚 Further Reading
 
@@ -281,7 +281,6 @@ Refer to `Login.cshtml` and `Login.cshtml.cs` for the exact implementation detai
 - [Affinidi CLI](https://github.com/affinidi/affinidi-cli)
 - [Affinidi Portal](https://portal.affinidi.com/)
 
----
 
 ## ❓ FAQ
 
