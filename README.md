@@ -1,23 +1,78 @@
-# Affinidi DotNet Reference Implementation
+# <Project Name>
 
-This is a template that showcases how you can enable your applications to issue credentials to users and store them in their Affinidi Vault. It accomplishes this through Affinidi Vault using the [OpenID for Verifiable Credential Issuance](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html) and [OpenID for Verifiable Presentations specification.](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) specification.
+<div align="center">
+  <img src="./docs/Affinidi%20Stacked_FC_RGB.jpg" alt="Banner or Logo" width="180"/>
+</div>
 
-Additonaly, It also show capabilites for Affinidi Verification, Affinidi Revocation.
+> A reference application showcasing how to integrate **Affinidi Services** using **Affinidi Tech Stack**.
 
-This project is a .NET 8.0 Razor web app, utilizing the power of Razor Pages for building dynamic web pages.
+> This project is a .NET 8.0 Razor web app, utilizing the power of Razor Pages for building dynamic web pages.
 
-## Getting Started
 
-These instructions will help you to get this project up and running on your local machine for development and testing purposes.
+## 📖 Table of Contents
+- [Overview](#-overview)
+- [Features to Explore](#-features-to-explore)
+- [Quickstart](#-quickstart)
+- [Read More](#read-more)
+- [Telemetry](#telemetry)
+- [Feedback, Support, and Community](#feedback-support-and-community)
+- [FAQ](#faq)
+- [Disclaimer](#_disclaimer_)
 
-### Prerequisites
 
+
+## 🧭 Overview
+This proreference application demonstrates how to use **Affinidi Services** to **issue verifiable credentials and store verifiable credentials in Affinidi Vault**.
+
+Additonaly, It also show capabilites for **Affinidi Iota Framwork (Sharing), Affinidi Identity Verification (IDV), Affinidi Verification, Affinidi Revocation**.
+
+It is built with **Dot Net 8.0** and **Razor Pages** and serves as a **reference implementation** for developers who want to:
+- Learn the **Affinidi APIs & TDK(Trust Development Kit)**
+- Bootstrap their own integrations
+- Explore credential **issuance, verification, Iota, IDV and revocation** flows
+
+
+## ✨ Features to Explore
+
+Below are the main features you can try in this reference app. Each feature links to the official Affinidi documentation and setup guides for a smooth onboarding experience:
+
+- 🔑 **Credential Issuance ([OpenID4VCI](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html))**
+  Issue verifiable credentials using Affinidi's Credential Issuance Service.
+  - 👉 [Setup Issuance Configuration](./docs/cis-configuration.md)
+  - 👉 [Affinidi Credential Issuance Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/)
+
+- 🔗 **Credential Sharing ([OpenID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html))**
+  Share credentials securely using Affinidi Iota Framework.
+  - 👉 [Setup Iota Configuration](./docs/setup-iota-config.md)
+  - 👉 [Affinidi Iota Docs](https://docs.affinidi.com/docs/affinidi-elements/iota/)
+
+- 🛡️ **Identity Verification (IDV)**
+  Verify user identity using Affinidi's IDV service.
+  - 👉 [Setup IDV Configuration](./docs/setup-idv-config.md)
+  - 👉 [Affinidi IDV Docs](https://docs.affinidi.com/docs/affinidi-vault/identity-verification/)
+
+- 🗄️ **Secure Storage in Affinidi Vault**
+  Store and manage credentials securely in Affinidi Vault.
+  - 👉 [Affinidi Vault Docs](https://docs.affinidi.com/docs/affinidi-vault/)
+
+- ✅ **Credential Verification**
+  Verify Verifiable Credentials and Presentations using Affinidi's verification service.
+  - 👉 [Affinidi Credential Verification Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-verification/)
+
+- ⚡ **Credential Revocation**
+  Revoke credentials using Affinidi's Revocation Service.
+  - 👉 [Affinidi Revocation Docs](https://docs.affinidi.com/docs/affinidi-elements/credential-issuance/revocation/)
+
+
+For each feature, follow the linked setup guides to configure your environment and explore the documentation for deeper understanding and advanced usage.
+
+## 🚀 Quickstart
 Make sure you have the following tools installed on your machine:
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download)
 - [Visual Studio code](https://code.visualstudio.com/) (or any preferred code editor)
 
-#### PreRequisite check
+### PreRequisite check
 
 Run this command to get the Dotnet version
     ```sh
@@ -29,20 +84,21 @@ You should get the output as below, please reinstall dotnet if the version is no
     8.0.XXX
     ```
 
-copy `.env.example` to `.env`:
-
-```
-cp .env.example .env
-```
-
-## Build and run the project:
-
 ```sh
+# 1. Clone the repo
+git clone https://github.com/affinidi/<repo-name>.git
+cd <repo-name>
+
+# 2. Copy environment variables
+cp .env.example .env
+
+# 3. Build and run the project:
+
 dotnet build
 dotnet run
 ```
 
-Then visit: http://localhost:5068/ to browse the reference app
+> Visit: http://localhost:5068/ to browse the reference app
 
 ## Affinidi Configurations
 
