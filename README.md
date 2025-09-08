@@ -19,7 +19,6 @@
 - [Overview](#-overview)
 - [Features to Explore](#-features-to-explore)
 - [Quickstart](#-quickstart)
-- [Affinidi Configurations](#affinidi-configurations)
 - [Read More](#read-more)
 - [Telemetry](#telemetry)
 - [Feedback, Support, and Community](#feedback-support-and-community)
@@ -112,29 +111,16 @@ dotnet --version
 ```
 Visit [http://localhost:5068/](http://localhost:5068/) to explore the reference app!
 
-
-## Affinidi Configurations
-
-- [Create your Personal Access Token](./docs/create-pat.md)
-- [Configure Credential Issuance](./docs/cis-configuration.md)
-- [Configure Iota Sharing](./docs/setup-iota-config.md)
-- [Configure IDV](./docs/setup-idv-config.md)
-
----
-
 ## Read More
 
 - [Affinidi Documentation](https://docs.affinidi.com/docs/)
 - [Affinidi Labs](https://docs.affinidi.com/labs/)
-
----
 
 ## Telemetry
 
 Affinidi collects usage data to improve our products and services.
 See our [Privacy Notice](https://www.affinidi.com/privacy-notice) for details.
 
----
 
 ## Feedback, Support, and Community
 
