@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using AffinidiTdk.AuthProvider;
 
 namespace Affinidi_Login_Demo_App.Util
 {

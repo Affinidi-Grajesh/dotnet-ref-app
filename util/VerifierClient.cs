@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using AffinidiTdk.AuthProvider;
 namespace Affinidi_Login_Demo_App.Util
 {
     public class VerifyCredentialsInput
