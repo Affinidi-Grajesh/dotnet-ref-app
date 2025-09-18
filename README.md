@@ -115,6 +115,69 @@ dotnet --version
 ```
 Visit [http://localhost:5068/](http://localhost:5068/) to explore the reference app!
 
+## 📦 Installing Local NuGet Packages
+
+If you have received `.nupkg` files for Affinidi TDK libraries, follow these steps to add them to your project from a local folder.
+
+### 1. Place the NuGet Packages
+
+Copy all provided `.nupkg` files into a folder named `library` at the root of your project:
+
+```
+/Users/admin/Documents/dotnet-ref-app/library/
+  ├── AffinidiTdk.AuthProvider.1.0.0.nupkg
+  ├── AffinidiTdk.Common.1.0.0.nupkg
+  ├── AffinidiTdk.CredentialIssuanceClient.1.0.0.nupkg
+  ├── AffinidiTdk.CredentialVerificationClient.1.0.0.nupkg
+```
+
+### 2. (Optional) Create a Local NuGet Store
+
+If you want to create a dedicated local NuGet source (store) for your packages, run:
+
+```sh
+dotnet nuget add source $(pwd)/library --name LocalLibrary
+```
+
+> **Note:**
+> If you see an error that the source already exists, you can skip this step or remove the existing source with:
+>
+> ```sh
+> dotnet nuget remove source LocalLibrary
+> ```
+
+You can list all configured sources with:
+
+```sh
+dotnet nuget list source
+```
+
+### 3. Add/Update Required Dependencies
+
+> **Note:** If you see a package downgrade error for `DotNetEnv`, update it to the required version.
+
+```sh
+dotnet add package DotNetEnv --version 3.1.1
+```
+
+### 4. Install Local NuGet Packages
+
+Run the following commands from your project root to install each package from the local `library` folder:
+
+```sh
+dotnet add package AffinidiTdk.AuthProvider --version 1.0.0 --source $(pwd)/library
+dotnet add package AffinidiTdk.Common --version 1.0.0 --source $(pwd)/library
+dotnet add package AffinidiTdk.CredentialIssuanceClient --version 1.0.0 --source $(pwd)/library
+dotnet add package AffinidiTdk.CredentialVerificationClient --version 1.0.0 --source $(pwd)/library
+```
+
+### 5. Restore Packages
+
+```sh
+dotnet restore
+```
+
+
 ## Read More
 
 - [Affinidi Documentation](https://docs.affinidi.com/docs/)

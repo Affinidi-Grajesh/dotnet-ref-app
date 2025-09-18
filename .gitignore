@@ -53,7 +53,7 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-bin 
-obj 
+bin
+obj
 .env
 

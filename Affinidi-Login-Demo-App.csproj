@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" Version="3.0.0" />
+    <PackageReference Include="AffinidiTdk.AuthProvider" Version="1.0.0" />
+    <PackageReference Include="AffinidiTdk.Common" Version="1.0.0" />
+    <PackageReference Include="AffinidiTdk.CredentialIssuanceClient" Version="1.0.0" />
+    <PackageReference Include="AffinidiTdk.CredentialVerificationClient" Version="1.0.0" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
