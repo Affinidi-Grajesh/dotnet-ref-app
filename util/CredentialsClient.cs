@@ -43,9 +43,12 @@ namespace Affinidi_Login_Demo_App.Util
 
                 // Configure the API client
                 var configuration = new Configuration();
-                configuration.ApiKey["ProjectTokenAuth"] = projectScopedToken;
+                configuration.AddApiKey("authorization", projectScopedToken);
 
-                var apiInstance = new IssuanceApi(configuration);
+                HttpClient httpClient = new HttpClient();
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                var apiInstance = new IssuanceApi(httpClient, configuration, httpClientHandler);
+                Console.WriteLine("[StartIssuanceAsync] IssuanceApi instance created.");
 
                 var requestJson = new
                 {
