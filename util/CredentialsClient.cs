@@ -38,7 +38,7 @@ namespace Affinidi_Login_Demo_App.Util
                 Console.WriteLine($"[StartIssuanceAsync] data: {JsonConvert.SerializeObject(data)}");
 
                 // Fetch the project scoped token asynchronously
-                var projectScopedToken = await AuthProviderClient.FetchProjectScopedToken();
+                var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
                 Console.WriteLine($"[StartIssuanceAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
 
                 // Configure the API client
@@ -64,6 +64,12 @@ namespace Affinidi_Login_Demo_App.Util
                 );
 
                 Console.WriteLine($"[StartIssuanceAsync] startIssuanceInput: {JsonConvert.SerializeObject(startIssuanceInput)}");
+
+                if (startIssuanceInput == null)
+                {
+                    Console.WriteLine("[StartIssuanceAsync] Error: startIssuanceInput is null.");
+                    return new { success = false, error = "Failed to map requestJson to StartIssuanceInput." };
+                }
 
                 var apiResponse = await apiInstance.StartIssuanceAsync(projectId, startIssuanceInput);
 

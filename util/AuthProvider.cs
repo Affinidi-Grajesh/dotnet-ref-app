@@ -1,31 +1,36 @@
-
 using AffinidiTdk.AuthProvider;
-
+using System;
+using System.Threading.Tasks;
+using DotNetEnv;
 namespace Affinidi_Login_Demo_App.Util
 {
     public class AuthProviderClient
     {
+        private static readonly Lazy<AuthProviderClient> _instance = new(() => new AuthProviderClient());
+        public static AuthProviderClient Instance => _instance.Value;
 
-        public static async Task<string> FetchProjectScopedToken()
+        private readonly AuthProvider _authProvider;
+
+        private AuthProviderClient()
         {
-            var projectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty;
-            var tokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty;
-            var privateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty;
-            var passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty;
+            // Optionally load .env if needed
+            // Env.TraversePath().Load();
 
             var authProviderParams = new AuthProviderParams
             {
-                ProjectId = projectId,
-                TokenId = tokenId,
-                PrivateKey = privateKey,
-                Passphrase = passphrase
+                ProjectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
+                TokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
+                KeyId = Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
+                PrivateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
+                Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty
             };
-            var authProvider = new AuthProvider(authProviderParams);
 
-            var token = await authProvider.FetchProjectScopedTokenAsync();
-            Console.WriteLine($"Fetched token: {token}");
+            _authProvider = new AuthProvider(authProviderParams);
+        }
 
-            return token;
+        public async Task<string> GetProjectScopedToken()
+        {
+            return await _authProvider.FetchProjectScopedTokenAsync();
         }
     }
 }

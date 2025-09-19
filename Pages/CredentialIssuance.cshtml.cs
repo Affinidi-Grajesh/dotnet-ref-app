@@ -10,13 +10,13 @@ namespace Affinidi_Login_Demo_App.Pages
 {
     public class MetaData
     {
-        public string expirationDate { get; set; }
+        public string? expirationDate { get; set; }
     }
 
     public class CredentialData
     {
-        public string credentialTypeId { get; set; }
-        public object credentialData { get; set; }
+        public string? credentialTypeId { get; set; }
+        public object? credentialData { get; set; }
 
     }
 
@@ -75,7 +75,7 @@ namespace Affinidi_Login_Demo_App.Pages
 
             var credentialsClient = new CredentialsClient(projectId, vaultUrl);
 
-            object issuanceResponse = null;
+            object? issuanceResponse = null;
             try
             {
                 issuanceResponse = await credentialsClient.StartIssuanceAsync(dataList, claimMode);
@@ -519,13 +519,13 @@ namespace Affinidi_Login_Demo_App.Pages
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostIssueCustom([FromForm] bool revocableCustom, [FromForm] bool expiryCustom)
+        public Task<IActionResult> OnPostIssueCustom([FromForm] bool revocableCustom, [FromForm] bool expiryCustom)
         {
             TempData["IssuanceMessage"] = "Custom Credential issuance process initiated. Check your backend logs for details.";
-            return RedirectToPage();
+            return Task.FromResult<IActionResult>(RedirectToPage());
         }
 
-        public async Task<IActionResult> OnPostCheckCredentialStatus()
+        public IActionResult OnPostCheckCredentialStatus()
         {
             TempData["IssuanceMessage"] = "Check Credential Status not implemented.";
             return RedirectToPage();
