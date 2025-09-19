@@ -95,5 +95,113 @@ namespace Affinidi_Login_Demo_App.Util
                 return new { success = false, error = ex.Message };
             }
         }
+
+        public async Task<object?> ListIssuanceRecordsAsync(string projectId, string configurationId, int? limit = null, string? exclusiveStartKey = null)
+        {
+            try
+            {
+                Console.WriteLine("[ListIssuanceRecordsAsync] Fetching issuance list...");
+                Console.WriteLine($"[ListIssuanceRecordsAsync] projectId: {projectId}");
+
+                // Fetch the project scoped token asynchronously
+                var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
+                Console.WriteLine($"[ListIssuanceRecordsAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
+
+                // Configure the API client
+                var configuration = new Configuration();
+                configuration.AddApiKey("authorization", projectScopedToken);
+
+                HttpClient httpClient = new HttpClient();
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                var apiInstance = new DefaultApi(httpClient, configuration, httpClientHandler);
+                Console.WriteLine("[ListIssuanceRecordsAsync] IssuanceApi instance created.");
+
+                var apiResponse = await apiInstance.ListIssuanceDataRecordsAsync(projectId, configurationId, limit, exclusiveStartKey);
+
+                Console.WriteLine($"[ListIssuanceRecordsAsync] apiResponse: {JsonConvert.SerializeObject(apiResponse)}");
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[IssuanceListAsync] Exception: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<object?> RevokeCredentialAsync(string projectId, string configurationId, ChangeCredentialStatusInput changeCredentialStatusInput)
+        {
+            try
+            {
+                Console.WriteLine("[RevokeCredentialAsync] Revoking credential...");
+                Console.WriteLine($"[RevokeCredentialAsync] projectId: {projectId}");
+                Console.WriteLine($"[RevokeCredentialAsync] configurationId: {configurationId}");
+                Console.WriteLine($"[RevokeCredentialAsync] changeCredentialStatusInput: {JsonConvert.SerializeObject(changeCredentialStatusInput)}");
+
+                // Fetch the project scoped token asynchronously
+                var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
+                Console.WriteLine($"[RevokeCredentialAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
+
+                // Configure the API client
+                var configuration = new Configuration();
+                configuration.AddApiKey("authorization", projectScopedToken);
+
+                HttpClient httpClient = new HttpClient();
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                var apiInstance = new DefaultApi(httpClient, configuration, httpClientHandler);
+                Console.WriteLine("[RevokeCredentialAsync] IssuanceApi instance created.");
+
+                // Use the provided ChangeCredentialStatusInput directly
+                var apiResponse = apiInstance.ChangeCredentialStatus(projectId, configurationId, changeCredentialStatusInput);
+
+                Console.WriteLine($"[RevokeCredentialAsync] apiResponse: {JsonConvert.SerializeObject(apiResponse)}");
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[RevokeCredentialAsync] Exception: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<object> CheckCredentialStatusAsync(string projectId, string configurationId, string issuanceRecordId)
+        {
+            try
+            {
+                Console.WriteLine("[CheckCredentialStatusAsync] Checking credential status...");
+                Console.WriteLine($"[CheckCredentialStatusAsync] projectId: {projectId}");
+                Console.WriteLine($"[CheckCredentialStatusAsync] configurationId: {configurationId}");
+                Console.WriteLine($"[CheckCredentialStatusAsync] issuanceRecordId: {issuanceRecordId}");
+
+                // Fetch the project scoped token asynchronously
+                var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
+                Console.WriteLine($"[CheckCredentialStatusAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
+
+                // Configure the API client
+                var configuration = new Configuration();
+                configuration.AddApiKey("authorization", projectScopedToken);
+
+                HttpClient httpClient = new HttpClient();
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                var apiInstance = new CredentialsApi(httpClient, configuration, httpClientHandler);
+                Console.WriteLine("[CheckCredentialStatusAsync] IssuanceApi instance created.");
+
+                var apiResponse = await apiInstance.GetIssuanceIdClaimedCredentialAsync(projectId, configurationId, issuanceRecordId);
+
+                Console.WriteLine($"[CheckCredentialStatusAsync] apiResponse: {JsonConvert.SerializeObject(apiResponse)}");
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CheckCredentialStatusAsync] Exception: {ex}");
+                return new { success = false, error = ex.Message };
+            }
+        }
     }
 }
+
+
+
+

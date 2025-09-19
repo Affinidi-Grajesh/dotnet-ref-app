@@ -169,7 +169,9 @@ dotnet add package AffinidiTdk.AuthProvider --version 1.0.0 --source $(pwd)/libr
 dotnet add package AffinidiTdk.Common --version 1.0.0 --source $(pwd)/library
 dotnet add package AffinidiTdk.CredentialIssuanceClient --version 1.0.0 --source $(pwd)/library
 dotnet add package AffinidiTdk.CredentialVerificationClient --version 1.0.0 --source $(pwd)/library
+dotnet add package AffinidiTdk.IotaClient --version 1.0.0 --source $(pwd)/library
 ```
+> **Note** update the version in the above command as per the package and client.
 
 ### 5. Restore Packages
 

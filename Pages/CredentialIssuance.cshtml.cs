@@ -525,10 +525,47 @@ namespace Affinidi_Login_Demo_App.Pages
             return Task.FromResult<IActionResult>(RedirectToPage());
         }
 
-        public IActionResult OnPostCheckCredentialStatus()
+        [BindProperty]
+        public string? StatusIssuanceId { get; set; }
+
+        public string? StatusMessage { get; set; }
+
+        public async Task<IActionResult> OnPostCheckCredentialStatus()
         {
-            TempData["IssuanceMessage"] = "Check Credential Status not implemented.";
-            return RedirectToPage();
+            var issuanceId = !string.IsNullOrWhiteSpace(StatusIssuanceId)
+                ? StatusIssuanceId
+                : HttpContext.Session.GetString("IssuanceId");
+
+            var configurationId = Environment.GetEnvironmentVariable("CONFIGURATION_ID") ?? string.Empty;
+            var projectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty;
+            Console.WriteLine($"[CheckCredentialStatus] Retrieved IssuanceId: {issuanceId}");
+            Console.WriteLine($"[CheckCredentialStatus] Using ConfigurationId: {configurationId}");
+            Console.WriteLine($"[CheckCredentialStatus] Using ProjectId: {projectId}");
+
+            if (string.IsNullOrEmpty(issuanceId) || string.IsNullOrEmpty(configurationId))
+            {
+                Console.WriteLine("[CheckCredentialStatus] Missing IssuanceId or ConfigurationId.");
+                StatusMessage = "Cannot check status: IssuanceId or ConfigurationId is missing.";
+                return Page();
+            }
+
+            try
+            {
+                var credentialsClient = new CredentialsClient(projectId, vaultUrl);
+                Console.WriteLine("[CheckCredentialStatus] Calling CheckCredentialStatusAsync...");
+                var statusResponse = await credentialsClient.CheckCredentialStatusAsync(projectId, configurationId, issuanceId);
+
+                Console.WriteLine($"[CheckCredentialStatus] Response: {JsonConvert.SerializeObject(statusResponse)}");
+
+                StatusMessage = $"Credential status: {JsonConvert.SerializeObject(statusResponse)}";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CheckCredentialStatus] Exception: {ex}");
+                StatusMessage = $"Error checking credential status: {ex.Message}";
+            }
+
+            return Page(); // <--- Stay on the same page and show the result
         }
     }
 }
