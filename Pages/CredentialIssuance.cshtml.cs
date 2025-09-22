@@ -20,7 +20,7 @@ namespace Affinidi_Login_Demo_App.Pages
 
     }
 
-    [IgnoreAntiforgeryToken]
+    [AutoValidateAntiforgeryToken]
     public class CredentialIssuanceModel : PageModel
     {
         private readonly string projectId;
@@ -118,20 +118,20 @@ namespace Affinidi_Login_Demo_App.Pages
             {
                 name = new
                 {
-                    givenName = "Grajesh",
-                    familyName = "Chandra",
-                    nickname = "Grajesh Testing"
+                    givenName = "John",
+                    familyName = "Doe",
+                    nickname = "Johnny"
                 },
-                birthdate = "01-01-1990",
-                birthCountry = "India",
-                citizenship = "Indian",
-                phoneNumber = "7666009585",
+                birthdate = "1990-01-01",
+                birthCountry = "USA",
+                citizenship = "American",
+                phoneNumber = "1234567890",
                 nationalIdentification = new
                 {
-                    idNumber1 = "pan",
-                    idType1 = "askjd13212432d"
+                    idNumber1 = "123456789",
+                    idType1 = "SSN"
                 },
-                email = "grajesh.c@affinidi.com",
+                email = "john.doe@example.com",
                 gender = "male",
                 maritalStatus = "married",
                 verificationStatus = "Completed",
@@ -154,9 +154,9 @@ namespace Affinidi_Login_Demo_App.Pages
             {
                 candidateDetails = new
                 {
-                    name = "Grajesh Chandra",
-                    phoneNumber = "7666009585",
-                    email = "grajesh.c@affinidi.com",
+                    name = "Jane Doe",
+                    phoneNumber = "0987654321",
+                    email = "jane.doe@example.com",
                     gender = "male"
                 },
                 institutionDetails = new
@@ -179,9 +179,9 @@ namespace Affinidi_Login_Demo_App.Pages
                 {
                     qualification = "Graduation",
                     course = "MBA",
-                    graduationDate = "12-08-2013",
-                    dateAttendedFrom = "12-08-2011",
-                    dateAttendedTo = "12-07-2013",
+                    graduationDate = "2013-08-12",
+                    dateAttendedFrom = "2011-08-12",
+                    dateAttendedTo = "2013-07-12",
                     educationRegistrationID = "admins1223454356"
                 },
                 verificationStatus = "Verified",
@@ -204,9 +204,9 @@ namespace Affinidi_Login_Demo_App.Pages
             {
                 candidateDetails = new
                 {
-                    name = "Grajesh Chandra",
-                    phoneNumber = "7666009585",
-                    email = "grajesh.c@affinidi.com",
+                    name = "Peter Jones",
+                    phoneNumber = "1122334455",
+                    email = "peter.jones@example.com",
                     gender = "male"
                 },
                 employerDetails = new
@@ -238,8 +238,8 @@ namespace Affinidi_Login_Demo_App.Pages
                     currency = "INR",
                     tenure = new
                     {
-                        fromDate = "05-2022",
-                        toDate = "06-2050"
+                        fromDate = "2022-05-01",
+                        toDate = "2050-06-01"
                     },
                     reasonForLeaving = "Resignation",
                     eligibleForRehire = "Yes"
@@ -282,8 +282,8 @@ namespace Affinidi_Login_Demo_App.Pages
                 },
                 stayDetails = new
                 {
-                    fromDate = "01-01-2000",
-                    toDate = "01-01-2020"
+                    fromDate = "2000-01-01",
+                    toDate = "2020-01-01"
                 },
                 verificationStatus = "Completed",
                 verificationEvidence = new
@@ -311,20 +311,20 @@ namespace Affinidi_Login_Demo_App.Pages
                 {
                     name = new
                     {
-                        givenName = "Grajesh",
-                        familyName = "Chandra",
-                        nickname = "Grajesh Testing"
+                        givenName = "Batch",
+                        familyName = "User",
+                        nickname = "Batchy"
                     },
-                    birthdate = "01-01-1990",
-                    birthCountry = "India",
-                    citizenship = "Indian",
-                    phoneNumber = "7666009585",
+                    birthdate = "1995-05-15",
+                    birthCountry = "Canada",
+                    citizenship = "Canadian",
+                    phoneNumber = "9876543210",
                     nationalIdentification = new
                     {
-                        idNumber1 = "pan",
-                        idType1 = "askjd13212432d"
+                        idNumber1 = "987654321",
+                        idType1 = "Passport"
                     },
-                    email = "grajesh.c@affinidi.com",
+                    email = "batch.user@example.com",
                     gender = "male",
                     maritalStatus = "married",
                     verificationStatus = "Completed",
@@ -366,8 +366,8 @@ namespace Affinidi_Login_Demo_App.Pages
                     },
                     stayDetails = new
                     {
-                        fromDate = "01-01-2000",
-                        toDate = "01-01-2020"
+                    fromDate = "2010-01-01",
+                    toDate = "2020-01-01"
                     },
                     verificationStatus = "Completed",
                     verificationEvidence = new
@@ -390,9 +390,9 @@ namespace Affinidi_Login_Demo_App.Pages
                 {
                     candidateDetails = new
                     {
-                        name = "Grajesh Chandra",
-                        phoneNumber = "7666009585",
-                        email = "grajesh.c@affinidi.com",
+                        name = "Batch Student",
+                        phoneNumber = "5551112222",
+                        email = "batch.student@example.com",
                         gender = "male"
                     },
                     institutionDetails = new
@@ -441,9 +441,9 @@ namespace Affinidi_Login_Demo_App.Pages
                 {
                     candidateDetails = new
                     {
-                        name = "Grajesh Chandra",
-                        phoneNumber = "7666009585",
-                        email = "grajesh.c@affinidi.com",
+                        name = "Batch Employee",
+                        phoneNumber = "4443332222",
+                        email = "batch.employee@example.com",
                         gender = "male"
                     },
                     employerDetails = new
@@ -475,8 +475,8 @@ namespace Affinidi_Login_Demo_App.Pages
                         currency = "INR",
                         tenure = new
                         {
-                            fromDate = "05-2022",
-                            toDate = "06-2050"
+                        fromDate = "2020-01-01",
+                        toDate = "2023-12-31"
                         },
                         reasonForLeaving = "Resignation",
                         eligibleForRehire = "Yes"

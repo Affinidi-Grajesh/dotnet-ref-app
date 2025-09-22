@@ -1,144 +1,66 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AffinidiTdk.AuthProvider;
+using AffinidiTdk.CredentialVerificationClient.Api;
+using AffinidiTdk.CredentialVerificationClient.Client;
+using AffinidiTdk.CredentialVerificationClient.Model;
+
+
 namespace Affinidi_Login_Demo_App.Util
 {
-    public class VerifyCredentialsInput
-    {
-        [JsonPropertyName("verifiableCredentials")]
-        public List<object> VerifiableCredentials { get; set; } = new();
-    }
-
-    public class VerifyPresentationInput
-    {
-        [JsonPropertyName("verifiablePresentation")]
-        public object VerifiablePresentation { get; set; } = new();
-    }
-
-    public class VerifyResponse
-    {
-        [JsonPropertyName("isValid")]
-        public bool IsValid { get; set; }
-
-        [JsonPropertyName("errors")]
-        public List<string>? Errors { get; set; }
-    }
-
-    public class VerifyErrorDetail
-    {
-        [JsonPropertyName("issue")]
-        public string Issue { get; set; } = string.Empty;
-    }
-
-    public class VerifyErrorResponse
-    {
-        [JsonPropertyName("name")]
-        public string Name { get; set; } = string.Empty;
-
-        [JsonPropertyName("traceId")]
-        public string TraceId { get; set; } = string.Empty;
-
-        [JsonPropertyName("message")]
-        public string Message { get; set; } = string.Empty;
-
-        [JsonPropertyName("details")]
-        public List<VerifyErrorDetail>? Details { get; set; }
-    }
-
-    public class VerifierConfiguration
-    {
-        public required string BasePath { get; set; }
-    }
-
-    public class VerifierApi
-    {
-        private readonly AuthProvider _authProvider;
-        private readonly VerifierConfiguration _config;
-
-        public VerifierApi(AuthProvider authProvider, VerifierConfiguration config)
-        {
-            _authProvider = authProvider;
-            _config = config;
-        }
-
-        public async Task<VerifyResponse?> VerifyCredentialsAsync(VerifyCredentialsInput input)
-        {
-            var url = $"{_config.BasePath}/ver/v1/verifier/verify-vcs";
-            return await PostVerificationRequestAsync(url, input);
-        }
-
-        public async Task<VerifyResponse?> VerifyPresentationAsync(VerifyPresentationInput input)
-        {
-            var url = $"{_config.BasePath}/ver/v1/verifier/verify-vp";
-            return await PostVerificationRequestAsync(url, input);
-        }
-
-        private async Task<VerifyResponse?> PostVerificationRequestAsync(string url, object input)
-        {
-            var token = await _authProvider.FetchProjectScopedTokenAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-
-            var jsonPayload = JsonSerializer.Serialize(input, options);
-            //Console.WriteLine($"Verifier API request to {url}: {jsonPayload}");
-
-            using var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await httpClient.PostAsync(url, new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json"));
-            var responseBody = await response.Content.ReadAsStringAsync();
-            //Console.WriteLine($"Verifier API response: {responseBody}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                return JsonSerializer.Deserialize<VerifyResponse>(responseBody, options);
-            }
-            else
-            {
-                //Console.WriteLine($"Verifier API error: {response.StatusCode}");
-                return null;
-            }
-        }
-    }
 
     public class VerifierClient
     {
-        private readonly VerifierApi _verifierApi;
-        private readonly AuthProviderParams _authProviderParams;
 
-        public VerifierClient()
+        public async Task<VerifyCredentialOutput?> VerifyCredentialsAsync(VerifyCredentialInput input)
         {
-            _authProviderParams = new AuthProviderParams
+
+            Console.WriteLine("[StartIssuanceAsync] Starting Verification process...");
+            Console.WriteLine($"[StartIssuanceAsync] Input: {JsonSerializer.Serialize(input)}");
+
+            // Fetch the project scoped token asynchronously
+            var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
+            Console.WriteLine($"[StartIssuanceAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
+
+            // Configure the API client
+            var configuration = new Configuration();
+            configuration.AddApiKey("authorization", projectScopedToken);
+
+            HttpClient httpClient = new HttpClient();
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            var apiInstance = new DefaultApi(httpClient, configuration, httpClientHandler);
+            Console.WriteLine("[StartVerificationAsync] DefaultApi instance created.");
             {
-                ProjectId = Environment.GetEnvironmentVariable("PROJECT_ID") ?? string.Empty,
-                TokenId = Environment.GetEnvironmentVariable("TOKEN_ID") ?? string.Empty,
-                KeyId = Environment.GetEnvironmentVariable("KEY_ID") ?? string.Empty,
-                PrivateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? string.Empty,
-                Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty,
-                ApiGatewayUrl = Environment.GetEnvironmentVariable("API_GATEWAY_URL") ?? string.Empty,
-                TokenEndpoint = Environment.GetEnvironmentVariable("TOKEN_ENDPOINT") ?? string.Empty
-            };
+                // Verifying VC
+                VerifyCredentialOutput result = await Task.Run(() => apiInstance.VerifyCredentials(input));
+                Console.WriteLine($"[VerifyCredentialsAsync] Verification result: {JsonSerializer.Serialize(result)}");
 
-            var authProvider = new AuthProvider(_authProviderParams);
-            var verifierConfig = new VerifierConfiguration { BasePath = $"{_authProviderParams.ApiGatewayUrl}" };
-            _verifierApi = new VerifierApi(authProvider, verifierConfig);
+                return result;
+            }
+
         }
 
-        public async Task<VerifyResponse?> VerifyCredentialsAsync(VerifyCredentialsInput input)
+        public async Task<VerifyPresentationOutput?> VerifyPresentationAsync(VerifyPresentationInput input)
         {
-            //Console.WriteLine($"VerifierClient: VerifyCredentialsAsync with Project ID {_authProviderParams.ProjectId}");
-            return await _verifierApi.VerifyCredentialsAsync(input);
-        }
+            // Fetch the project scoped token asynchronously
+            var projectScopedToken = await AuthProviderClient.Instance.GetProjectScopedToken();
+            Console.WriteLine($"[StartIssuanceAsync] projectScopedToken: {(string.IsNullOrEmpty(projectScopedToken) ? "EMPTY" : "REDACTED")}");
 
-        public async Task<VerifyResponse?> VerifyPresentationAsync(VerifyPresentationInput input)
-        {
-            //Console.WriteLine($"VerifierClient: VerifyPresentationAsync with Project ID {_authProviderParams.ProjectId}");
-            return await _verifierApi.VerifyPresentationAsync(input);
+            // Configure the API client
+            var configuration = new Configuration();
+            configuration.AddApiKey("authorization", projectScopedToken);
+
+            HttpClient httpClient = new HttpClient();
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            var apiInstance = new DefaultApi(httpClient, configuration, httpClientHandler);
+            Console.WriteLine("[StartIssuanceAsync] IssuanceApi instance created.");
+            {
+                // Verifying VP
+                VerifyPresentationOutput result = await Task.Run(() => apiInstance.VerifyPresentation(input));
+                Console.WriteLine($"[VerifyPresentationAsync] Verification result: {JsonSerializer.Serialize(result)}");
+
+                return result;
+            }
         }
     }
 }

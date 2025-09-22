@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Affinidi_Login_Demo_App.Util;
 using System.Text.Json;
+using AffinidiTdk.CredentialVerificationClient.Model;
 
 namespace Affinidi_Login_Demo_App.Pages
 {
@@ -29,9 +30,12 @@ namespace Affinidi_Login_Demo_App.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Console.WriteLine($"[CredentialVerification] POST called with CredentialType: {CredentialType}");
+
             if (string.IsNullOrWhiteSpace(CredentialData) || string.IsNullOrWhiteSpace(CredentialType))
             {
                 VerificationResult = "Please select a type and provide credential data.";
+                Console.WriteLine("[CredentialVerification] Missing CredentialType or CredentialData.");
                 return Page();
             }
 
@@ -43,54 +47,57 @@ namespace Affinidi_Login_Demo_App.Pages
                 {
                     parsedData = JsonSerializer.Deserialize<object>(CredentialData);
                 }
-                catch (JsonException)
+                catch (JsonException ex)
                 {
                     VerificationResult = "Invalid JSON format in credential data.";
+                    Console.WriteLine($"[CredentialVerification] Invalid JSON format: {ex.Message}");
                     return Page();
                 }
 
                 if (parsedData == null)
                 {
                     VerificationResult = "Credential data cannot be empty.";
+                    Console.WriteLine("[CredentialVerification] Credential data is empty after parsing.");
                     return Page();
                 }
 
                 if (CredentialType == "VC")
                 {
-                    var input = new VerifyCredentialsInput
-                    {
-                        VerifiableCredentials = new List<object> { parsedData }
-                    };
+                    var input = new VerifyCredentialInput(new List<object> { parsedData });
 
-                    //Console.WriteLine("Calling VerifyCredentialsAsync...");
+                    Console.WriteLine("[CredentialVerification] Calling VerifyCredentialsAsync...");
+                    Console.WriteLine($"[CredentialVerification] Input: {JsonSerializer.Serialize(input)}");
                     var response = await _verifierClient.VerifyCredentialsAsync(input);
 
                     VerificationResult = response != null
                         ? JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true })
                         : "Verification failed or invalid response.";
+
+                    Console.WriteLine($"[CredentialVerification] VC VerificationResult: {VerificationResult}");
                 }
                 else if (CredentialType == "VP")
                 {
-                    var input = new VerifyPresentationInput
-                    {
-                        VerifiablePresentation = parsedData
-                    };
+                    var input = new VerifyPresentationInput(new List<object> { parsedData });
 
-                    //Console.WriteLine("Calling VerifyPresentationAsync...");
+                    Console.WriteLine("[CredentialVerification] Calling VerifyPresentationAsync...");
                     var response = await _verifierClient.VerifyPresentationAsync(input);
 
                     VerificationResult = response != null
                         ? JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true })
                         : "Verification failed or invalid response.";
+
+                    Console.WriteLine($"[CredentialVerification] VP VerificationResult: {VerificationResult}");
                 }
                 else
                 {
                     VerificationResult = $"Unknown credential type: {CredentialType}";
+                    Console.WriteLine($"[CredentialVerification] Unknown credential type: {CredentialType}");
                 }
             }
             catch (Exception ex)
             {
                 VerificationResult = $"Error: {ex.Message}";
+                Console.WriteLine($"[CredentialVerification] Exception occurred: {ex}");
             }
 
             return Page();

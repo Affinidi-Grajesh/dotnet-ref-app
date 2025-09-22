@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Affinidi_Login_Demo_App.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-[IgnoreAntiforgeryToken]
+[AutoValidateAntiforgeryToken]
+
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }

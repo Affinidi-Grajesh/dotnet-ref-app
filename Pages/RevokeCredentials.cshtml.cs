@@ -114,30 +114,30 @@ namespace Affinidi_Login_Demo_App.Pages
                         input
                     );
 
-                    var responseDict = response as IDictionary<string, object>;
+                    var responseJson = JsonConvert.SerializeObject(response);
+                    var responseObj = JObject.Parse(responseJson);
+
                     string statusPurpose = "";
-                    if (responseDict != null && responseDict.TryGetValue("statusListsDetails", out var statusListsDetailsObj))
+                    string statusListsDetailsStr = "";
+
+                    if (responseObj["statusListsDetails"] != null)
                     {
-                        var statusLists = statusListsDetailsObj as IEnumerable<object>;
-                        if (statusLists != null)
+                        statusListsDetailsStr = responseObj["statusListsDetails"].ToString(Formatting.Indented);
+                        var statusLists = responseObj["statusListsDetails"] as JArray;
+                        if (statusLists != null && statusLists.Count > 0)
                         {
-                            foreach (var status in statusLists)
-                            {
-                                var statusDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(status.ToString() ?? "{}");
-                                if (statusDict != null && statusDict.TryGetValue("statusListPurpose", out var purposeObj))
-                                {
-                                    statusPurpose = purposeObj?.ToString() ?? "";
-                                    statusPurposes.Add(statusPurpose);
-                                    break;
-                                }
-                            }
+                            var firstStatus = statusLists[0];
+                            statusPurpose = firstStatus["statusListPurpose"]?.ToString() ?? "";
                         }
                     }
 
-                    if (responseDict != null && responseDict.ContainsKey("id"))
+                    if (responseObj["id"] != null)
                     {
                         Console.WriteLine($"[Revoke] Successfully revoked IssuanceRecordId: {issuanceRecordId}, Status Purpose: {statusPurpose}");
                         successCount++;
+                        statusPurposes.Add(statusPurpose);
+                        // Collect statusListsDetails for frontend
+                        TempData["StatusListsDetails"] = statusListsDetailsStr;
                     }
                     else
                     {

@@ -1,6 +1,7 @@
 using Affinidi_Login_Demo_App.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using AffinidiTdk.IotaClient.Model;
 
 namespace Affinidi_Login_Demo_App.Pages
 {
@@ -11,62 +12,74 @@ namespace Affinidi_Login_Demo_App.Pages
         {
             var client = new IotaClient();
 
-            var input = new InitiateDataSharingRequestInput
-            {
-                QueryId = queryId,
-                CorrelationId = Guid.NewGuid().ToString(),
-                Nonce = Guid.NewGuid().ToString("N"),
-                RedirectUri = "http://localhost:5068/Iota",
-                ConfigurationId = Environment.GetEnvironmentVariable("IOTA_CONFIG_ID") ?? string.Empty,
-                Mode = "redirect"
-            };
+            var input = new InitiateDataSharingRequestInput(
+                queryId,
+                Guid.NewGuid().ToString(), // correlationId
+                0, // tokenMaxAge (use 0 or your desired value)
+                Guid.NewGuid().ToString("N"), // nonce
+                "http://localhost:5068/Iota", // redirectUri
+                Environment.GetEnvironmentVariable("IOTA_CONFIG_ID") ?? string.Empty, // configurationId
+                InitiateDataSharingRequestInput.ModeEnum.Redirect // mode
+            );
 
-            var result = await client.Start(input);
+            Console.WriteLine($"[Iota] Initiating data sharing with input: {System.Text.Json.JsonSerializer.Serialize(input)}");
+
+            var result = await client.InitiateDataSharingRequest(input);
 
             if (result != null)
             {
+                Console.WriteLine($"[Iota] InitiateDataSharingRequest result: {System.Text.Json.JsonSerializer.Serialize(result)}");
                 HttpContext.Session.SetString("CorrelationId", result.CorrelationId);
                 HttpContext.Session.SetString("TransactionId", result.TransactionId);
                 var redirectUrl = $"https://vault.affinidi.com/login?request={Uri.EscapeDataString(result.Jwt)}";
+                Console.WriteLine($"[Iota] Redirecting to: {redirectUrl}");
                 return Redirect(redirectUrl);
             }
 
+            Console.WriteLine("[Iota] Not able to initiate data sharing. Please try again later.");
             TempData["IotaMessage"] = "Not able to initiate data sharing. Please try again later.";
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostSharePersonalInfo()
         {
-            var queryId = Environment.GetEnvironmentVariable("IOTA_AVVANZ_CREDENTIAL_QUERY") ?? string.Empty;
+            var queryId = Environment.GetEnvironmentVariable("IOTA_CREDENTIAL_QUERY_PERSONAL") ?? string.Empty;
+            Console.WriteLine($"[Iota] OnPostSharePersonalInfo called with QueryId: {queryId}");
             return await _InitiatIota(queryId);
         }
 
         public async Task<IActionResult> OnGetAsync([FromQuery(Name = "response_code")] string? responseCode)
         {
+            Console.WriteLine($"[Iota] OnGetAsync called with response_code: {responseCode}");
+
             if (!string.IsNullOrEmpty(responseCode))
             {
                 var correlationId = HttpContext.Session.GetString("CorrelationId");
                 var transactionId = HttpContext.Session.GetString("TransactionId");
-                //Console.WriteLine($"Iota Complete called with CorrelationId: {correlationId}, TransactionId: {transactionId}, ResponseCode: {responseCode}");
+                Console.WriteLine($"[Iota] CorrelationId: {correlationId}, TransactionId: {transactionId}, ResponseCode: {responseCode}");
+
                 if (string.IsNullOrEmpty(correlationId) || string.IsNullOrEmpty(transactionId))
                 {
+                    Console.WriteLine("[Iota] Missing CorrelationId or TransactionId in session.");
                     return RedirectToPage();
                 }
 
                 // Call Complete API
                 var client = new IotaClient();
-                var input = new FetchIOTAVPResponseInput
-                {
-                    CorrelationId = correlationId,
-                    TransactionId = transactionId,
-                    ResponseCode = responseCode,
-                    ConfigurationId = Environment.GetEnvironmentVariable("IOTA_CONFIG_ID") ?? string.Empty
-                };
+                var input = new FetchIOTAVPResponseInput(
+                    correlationId,
+                    transactionId,
+                    responseCode,
+                    Environment.GetEnvironmentVariable("IOTA_CONFIG_ID") ?? string.Empty
+                );
 
-                var result = await client.Complete(input);
+                Console.WriteLine($"[Iota] FetchIOTAVPResponse input: {System.Text.Json.JsonSerializer.Serialize(input)}");
+
+                var result = await client.FetchIOTAVPResponse(input);
 
                 if (result != null)
                 {
+                    Console.WriteLine($"[Iota] FetchIOTAVPResponse result: {System.Text.Json.JsonSerializer.Serialize(result)}");
                     TempData["IotaMessage"] = $"Iota Complete successful";
                     var parsedJson = System.Text.Json.JsonDocument.Parse(result.VpToken);
                     var prettyJson = System.Text.Json.JsonSerializer.Serialize(
@@ -75,11 +88,16 @@ namespace Affinidi_Login_Demo_App.Pages
                     );
                     TempData["VpToken"] = prettyJson;
                 }
+                else
+                {
+                    Console.WriteLine("[Iota] FetchIOTAVPResponse returned null.");
+                }
 
                 return RedirectToPage();
             }
 
             // Return the default page if responseCode is null or empty
+            Console.WriteLine("[Iota] No response_code provided, returning default page.");
             return Page();
         }
 
