@@ -1,7 +1,6 @@
 using AffinidiTdk.AuthProvider;
-using System;
-using System.Threading.Tasks;
-using DotNetEnv;
+using Newtonsoft.Json;
+
 namespace Affinidi_Login_Demo_App.Util
 {
     public class AuthProviderClient
@@ -25,12 +24,18 @@ namespace Affinidi_Login_Demo_App.Util
                 Passphrase = Environment.GetEnvironmentVariable("PASSPHRASE") ?? string.Empty
             };
 
+            // Log the parameters using Newtonsoft.Json for debugging (do not log secrets in production)
+            Console.WriteLine($"[AuthProvider] AuthProviderParams: {JsonConvert.SerializeObject(authProviderParams)}");
+
             _authProvider = new AuthProvider(authProviderParams);
         }
 
         public async Task<string> GetProjectScopedToken()
         {
-            return await _authProvider.FetchProjectScopedTokenAsync();
+            var token = await _authProvider.FetchProjectScopedTokenAsync();
+            // Log the fetched token (do not log sensitive information in production)
+            Console.WriteLine($"[AuthProvider] Fetched Project Scoped Token: {token}");
+            return token;
         }
     }
 }

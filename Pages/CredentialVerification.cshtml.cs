@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Affinidi_Login_Demo_App.Util;
-using System.Text.Json;
 using AffinidiTdk.CredentialVerificationClient.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Affinidi_Login_Demo_App.Pages
 {
@@ -41,13 +42,14 @@ namespace Affinidi_Login_Demo_App.Pages
 
             try
             {
-                // Try to parse the JSON from the input field
+                // Try to parse the JSON from the input field using Newtonsoft.Json
                 object? parsedData;
                 try
                 {
-                    parsedData = JsonSerializer.Deserialize<object>(CredentialData);
+                    parsedData = JToken.Parse(CredentialData);
+                    Console.WriteLine($"[CredentialVerification] CredentialData Input: {JsonConvert.SerializeObject(parsedData, Formatting.None)}");
                 }
-                catch (JsonException ex)
+                catch (JsonReaderException ex)
                 {
                     VerificationResult = "Invalid JSON format in credential data.";
                     Console.WriteLine($"[CredentialVerification] Invalid JSON format: {ex.Message}");
@@ -60,30 +62,32 @@ namespace Affinidi_Login_Demo_App.Pages
                     Console.WriteLine("[CredentialVerification] Credential data is empty after parsing.");
                     return Page();
                 }
-
                 if (CredentialType == "VC")
                 {
                     var input = new VerifyCredentialInput(new List<object> { parsedData });
 
                     Console.WriteLine("[CredentialVerification] Calling VerifyCredentialsAsync...");
-                    Console.WriteLine($"[CredentialVerification] Input: {JsonSerializer.Serialize(input)}");
+
                     var response = await _verifierClient.VerifyCredentialsAsync(input);
 
                     VerificationResult = response != null
-                        ? JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true })
+                        ? JsonConvert.SerializeObject(response, Formatting.Indented)
                         : "Verification failed or invalid response.";
 
                     Console.WriteLine($"[CredentialVerification] VC VerificationResult: {VerificationResult}");
                 }
                 else if (CredentialType == "VP")
                 {
-                    var input = new VerifyPresentationInput(new List<object> { parsedData });
+                    var input = new VerifyPresentationInput
+                    {
+                        VerifiablePresentation = parsedData
+                    };
 
                     Console.WriteLine("[CredentialVerification] Calling VerifyPresentationAsync...");
                     var response = await _verifierClient.VerifyPresentationAsync(input);
 
                     VerificationResult = response != null
-                        ? JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true })
+                        ? JsonConvert.SerializeObject(response, Formatting.Indented)
                         : "Verification failed or invalid response.";
 
                     Console.WriteLine($"[CredentialVerification] VP VerificationResult: {VerificationResult}");

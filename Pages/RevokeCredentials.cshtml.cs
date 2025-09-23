@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Affinidi_Login_Demo_App.Util;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using AffinidiTdk.CredentialIssuanceClient.Model;
-using System;
 using Newtonsoft.Json.Linq;
 
 namespace Affinidi_Login_Demo_App.Pages

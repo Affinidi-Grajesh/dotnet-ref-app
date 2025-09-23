@@ -2,6 +2,7 @@ using Affinidi_Login_Demo_App.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AffinidiTdk.IotaClient.Model;
+using Newtonsoft.Json;
 
 namespace Affinidi_Login_Demo_App.Pages
 {
@@ -22,13 +23,13 @@ namespace Affinidi_Login_Demo_App.Pages
                 InitiateDataSharingRequestInput.ModeEnum.Redirect // mode
             );
 
-            Console.WriteLine($"[Iota] Initiating data sharing with input: {System.Text.Json.JsonSerializer.Serialize(input)}");
+            Console.WriteLine($"[Iota] Initiating data sharing with input: {JsonConvert.SerializeObject(input)}");
 
             var result = await client.InitiateDataSharingRequest(input);
 
             if (result != null)
             {
-                Console.WriteLine($"[Iota] InitiateDataSharingRequest result: {System.Text.Json.JsonSerializer.Serialize(result)}");
+                Console.WriteLine($"[Iota] InitiateDataSharingRequest result: {JsonConvert.SerializeObject(result)}");
                 HttpContext.Session.SetString("CorrelationId", result.CorrelationId);
                 HttpContext.Session.SetString("TransactionId", result.TransactionId);
                 var redirectUrl = $"https://vault.affinidi.com/login?request={Uri.EscapeDataString(result.Jwt)}";
@@ -73,19 +74,16 @@ namespace Affinidi_Login_Demo_App.Pages
                     Environment.GetEnvironmentVariable("IOTA_CONFIG_ID") ?? string.Empty
                 );
 
-                Console.WriteLine($"[Iota] FetchIOTAVPResponse input: {System.Text.Json.JsonSerializer.Serialize(input)}");
+                Console.WriteLine($"[Iota] FetchIOTAVPResponse input: {JsonConvert.SerializeObject(input)}");
 
                 var result = await client.FetchIOTAVPResponse(input);
 
                 if (result != null)
                 {
-                    Console.WriteLine($"[Iota] FetchIOTAVPResponse result: {System.Text.Json.JsonSerializer.Serialize(result)}");
+                    Console.WriteLine($"[Iota] FetchIOTAVPResponse result: {JsonConvert.SerializeObject(result)}");
                     TempData["IotaMessage"] = $"Iota Complete successful";
-                    var parsedJson = System.Text.Json.JsonDocument.Parse(result.VpToken);
-                    var prettyJson = System.Text.Json.JsonSerializer.Serialize(
-                        parsedJson,
-                        new System.Text.Json.JsonSerializerOptions { WriteIndented = true }
-                    );
+                    var parsedJson = JsonConvert.DeserializeObject(result.VpToken);
+                    var prettyJson = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
                     TempData["VpToken"] = prettyJson;
                 }
                 else

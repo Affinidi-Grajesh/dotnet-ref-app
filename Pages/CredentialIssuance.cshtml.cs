@@ -2,9 +2,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Affinidi_Login_Demo_App.Util;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace Affinidi_Login_Demo_App.Pages
 {

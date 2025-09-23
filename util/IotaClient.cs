@@ -1,8 +1,4 @@
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-
+using Newtonsoft.Json;
 using AffinidiTdk.IotaClient.Api;
 using AffinidiTdk.IotaClient.Client;
 using AffinidiTdk.IotaClient.Model;
@@ -28,7 +24,7 @@ namespace Affinidi_Login_Demo_App.Util
             {
                 // Starting IOTA
                 InitiateDataSharingRequestOK? result = await Task.Run(() => apiInstance.InitiateDataSharingRequest(input));
-                Console.WriteLine($"[InitiateDataSharingRequest] IOTA start result: {JsonSerializer.Serialize(result)}");
+                Console.WriteLine($"[InitiateDataSharingRequest] IOTA start result: {JsonConvert.SerializeObject(result)}");
 
                 return result?.Data;
             }
@@ -51,7 +47,7 @@ namespace Affinidi_Login_Demo_App.Util
             {
                 // Fetching IOTA VP response
                 FetchIOTAVPResponseOK? result = await Task.Run(() => apiInstance.FetchIotaVpResponse(input));
-                Console.WriteLine($"[FetchIOTAVPResponse] IOTA fetch result: {JsonSerializer.Serialize(result)}");
+                Console.WriteLine($"[FetchIOTAVPResponse] IOTA fetch result: {JsonConvert.SerializeObject(result)}");
 
                 return result;
             }
