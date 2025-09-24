@@ -49,6 +49,34 @@ namespace Affinidi_Login_Demo_App.Pages
             return await _InitiatIota(queryId);
         }
 
+        public async Task<IActionResult> OnPostShareAddress()
+        {
+            var queryId = Environment.GetEnvironmentVariable("IOTA_CREDENTIAL_QUERY_ADDRESS") ?? string.Empty;
+            Console.WriteLine($"[Iota] OnPostShareAddress called with QueryId: {queryId}");
+            return await _InitiatIota(queryId);
+        }
+
+        public async Task<IActionResult> OnPostShareEmployment()
+        {
+            var queryId = Environment.GetEnvironmentVariable("IOTA_CREDENTIAL_QUERY_EMPLOYMENT") ?? string.Empty;
+            Console.WriteLine($"[Iota] OnPostShareEmployment called with QueryId: {queryId}");
+            return await _InitiatIota(queryId);
+        }
+
+        public async Task<IActionResult> OnPostShareEducation()
+        {
+            var queryId = Environment.GetEnvironmentVariable("IOTA_CREDENTIAL_QUERY_EDUCATION") ?? string.Empty;
+            Console.WriteLine($"[Iota] OnPostShareEducation called with QueryId: {queryId}");
+            return await _InitiatIota(queryId);
+        }
+
+        public async Task<IActionResult> OnPostShareSelective()
+        {
+            var queryId = Environment.GetEnvironmentVariable("IOTA_CREDENTIAL_QUERY_SELECTIVE_SHARING") ?? string.Empty;
+            Console.WriteLine($"[Iota] OnPostShareSelective called with QueryId: {queryId}");
+            return await _InitiatIota(queryId);
+        }
+
         public async Task<IActionResult> OnGetAsync([FromQuery(Name = "response_code")] string? responseCode)
         {
             Console.WriteLine($"[Iota] OnGetAsync called with response_code: {responseCode}");
