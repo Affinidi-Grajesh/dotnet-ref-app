@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Affinidi_Login_Demo_App
 {
-    public record UserData(string given_name, string family_name, string email, string did);
+    public record UserData(string? given_name, string? family_name, string? email, string? did);
     [Authorize]
     public class UserDetailModel(TokenClient tokenClient) : PageModel
     {
@@ -34,7 +34,7 @@ namespace Affinidi_Login_Demo_App
                     var trimmed = claim.TrimStart();
                     if (trimmed.StartsWith("{"))
                     {
-                        var dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(claim);
+                        var dataDict = JsonConvert.DeserializeObject<Dictionary<string, string?>>(claim);
                         userData = userData with
                         {
                             given_name = dataDict?.GetValueOrDefault("givenName", userData.given_name),
@@ -58,7 +58,9 @@ namespace Affinidi_Login_Demo_App
             }
 
 
-            this.Username = !String.IsNullOrEmpty(userData.given_name)? userData.given_name + " " + userData.family_name:userData.email.Split('@').ElementAtOrDefault(0);
+            this.Username = !string.IsNullOrEmpty(userData.given_name)
+                ? userData.given_name + " " + userData.family_name
+                : (!string.IsNullOrEmpty(userData.email) ? userData.email.Split('@').ElementAtOrDefault(0) : string.Empty);
             this.DID = userData.did;
             this.Email = userData.email;
             this.AccessToken = await this.tokenClient.GetAccessToken(this.HttpContext);

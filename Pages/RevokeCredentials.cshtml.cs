@@ -119,8 +119,9 @@ namespace Affinidi_Login_Demo_App.Pages
 
                     if (responseObj["statusListsDetails"] != null)
                     {
-                        statusListsDetailsStr = responseObj["statusListsDetails"].ToString(Formatting.Indented);
-                        var statusLists = responseObj["statusListsDetails"] as JArray;
+                        var statusListsDetailsToken = responseObj["statusListsDetails"];
+                        statusListsDetailsStr = statusListsDetailsToken != null ? statusListsDetailsToken.ToString(Formatting.Indented) : string.Empty;
+                        var statusLists = statusListsDetailsToken as JArray;
                         if (statusLists != null && statusLists.Count > 0)
                         {
                             var firstStatus = statusLists[0];
